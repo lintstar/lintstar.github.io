@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>MacOS python3 安装 gevent 模块</title>
+      <link href="/2020/10/2eadcca4.html"/>
+      <url>/2020/10/2eadcca4.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="MacOS-python3-安装-gevent-模块"><a href="#MacOS-python3-安装-gevent-模块" class="headerlink" title="MacOS python3 安装 gevent 模块"></a>MacOS python3 安装 gevent 模块</h1><p>使用 TPscan 时需要安装 Python3 的 gevent 模块</p><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p><strong>系统版本：MacOS 10.15.7</strong></p><p><strong>Python 版本：3.8.2</strong></p><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p><strong>先尝试使用下面命令安装：</strong></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip3 install gevent</span><br><span class="line">python3 -m pip install gevent</span><br></pre></td></tr></table></figure><p><strong>报错信息如下：</strong></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">---------------------------------------------</span><br><span class="line">ERROR: Command errored out with <span class="built_in">exit</span> status 1: /Applications/Xcode.app/Contents/Developer/usr/bin/python3 -u -c <span class="string">&#x27;import sys, setuptools, tokenize; sys.argv[0] = &#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;/private/tmp/pip-install-d7edx1ek/greenlet/setup.py&#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;; __file__=&#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;/private/tmp/pip-install-d7edx1ek/greenlet/setup.py&#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;;f=getattr(tokenize, &#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;open&#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;, open)(__file__);code=f.read().replace(&#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;\r\n&#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;, &#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;\n&#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;);f.close();exec(compile(code, __file__, &#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;exec&#x27;</span><span class="string">&quot;&#x27;&quot;</span><span class="string">&#x27;))&#x27;</span> install --record /private/tmp/pip-record-sr9i1xr3/install-record.txt --single-version-externally-managed --compile --install-headers /Library/Python/3.8/include/greenlet Check the logs <span class="keyword">for</span> full <span class="built_in">command</span> output.</span><br><span class="line"></span><br></pre></td></tr></table></figure><h2 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h2><p><strong>MAC OS的Xcode从5.1起给编译器规定对于未知参数传入视为error，我们需要使用ARCHFLAGS将该error降级为warning。</strong></p><h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p><strong>大哥 @matrix 在10月27号晚上找到了解决这个困扰我们好几天的报错的办法：</strong></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future pip3 install gevent</span><br></pre></td></tr></table></figure><p><strong>完美解决  一键安装</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201028234539.png" alt="image-20201028234532695"></p><p><strong>安装成功后再次尝试 <code>pyhton3 TPscan.py</code> 成功：</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201028235228.png" alt="image-20201028235228646"></p><blockquote><p><strong>参考链接：<a href="https://blog.csdn.net/qq_34081968/article/details/109100499">https://blog.csdn.net/qq_34081968/article/details/109100499</a></strong></p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> Tools </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Mac </tag>
+            
+            <tag> Python </tag>
+            
+            <tag> Web </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>阿里云配置CDN加速博客</title>
       <link href="/2020/10/1979adb9.html"/>
       <url>/2020/10/1979adb9.html</url>
@@ -55,9 +84,9 @@
             
             <tag> CDN </tag>
             
-            <tag> Butterfly </tag>
-            
             <tag> Mac </tag>
+            
+            <tag> Butterfly </tag>
             
         </tags>
       
