@@ -8,9 +8,8 @@
 <meta property="og:image" content="https://www.lintstar.top/plogo/Alogo.png">
 <meta property="article:author" content="离沫凌天๓">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.lintstar.top/plogo/Alogo.png"><link rel="shortcut icon" href="/plogo/favicon-32x32.png"><link rel="canonical" href="https://www.lintstar.top/404.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var GLOBAL_CONFIG = { 
+<meta name="twitter:image" content="https://www.lintstar.top/plogo/Alogo.png"><link rel="shortcut icon" href="/plogo/favicon-32x32.png"><link rel="canonical" href="https://www.lintstar.top/404"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><script>var GLOBAL_CONFIG = { 
   root: '/',
-  hexoversion: '5.2.0',
   algolia: undefined,
   localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
   translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
@@ -76,8 +75,8 @@ var saveToLocal = {
   isPost: false,
   isHome: false,
   isHighlightShrink: false,
-  isSidebar: false,
-  postUpdate: '2020-11-22 02:04:32'
+  isToc: false,
+  postUpdate: '2020-11-22 12:42:11'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -90,8 +89,7 @@ var saveToLocal = {
   #post-meta time {
     display: inline !important
   }
-</style></noscript><script>(function () {
-  window.activateDarkMode = function () {
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
     document.documentElement.setAttribute('data-theme', 'dark')
     if (document.querySelector('meta[name="theme-color"]') !== null) {
       document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
@@ -99,11 +97,10 @@ var saveToLocal = {
   }
   window.activateLightMode = function () {
     document.documentElement.setAttribute('data-theme', 'light')
-    if (document.querySelector('meta[name="theme-color"]') !== null) {
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
       document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
     }
   }
-
   const autoChangeMode = 'false'
   const t = saveToLocal.get('theme')
   if (autoChangeMode === '1') {
@@ -111,7 +108,6 @@ var saveToLocal = {
     const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
     const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
     const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
-
     if (t === undefined) {
       if (isLightMode) activateLightMode()
       else if (isDarkMode) activateDarkMode()
@@ -138,10 +134,32 @@ var saveToLocal = {
   } else {
     if (t === 'dark') activateDarkMode()
     else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="referrer" content="no-referrer-when-downgrade" /><meta name="referrer" content="no-referrer"/><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="离沫凌天๓" type="application/atom+xml">
+</head><body><div id="error-wrap"><div class="error-content"><div class="error-img" style="background-image: url(https://i.loli.net/2020/05/19/aKOcLiyPl2JQdFD.png)"></div><div class="error-info"><h1 class="error_title">404</h1><div class="error_subtitle">Page Not Found</div><a class="button--animated" href="/"><i class="fas fa-rocket"></i>回到主页</a></div></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.spacingElementById('content-inner')
+  else {
+    $.getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js', () => {
+      pangu.spacingElementById('content-inner')
+    })
   }
-})()</script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="离沫凌天๓" type="application/atom+xml">
-</head><body><div id="error-wrap"><div class="error-content"><div class="error-img" style="background-image: url(https://i.loli.net/2020/05/19/aKOcLiyPl2JQdFD.png)"></div><div class="error-info"><h1 class="error_title">404</h1><div class="error_subtitle">Page Not Found</div><a class="button--animated" href="/"><i class="fas fa-rocket"></i>回到主页</a></div></div></div><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
- <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguFn)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
 POWERMODE.shake = true;
 POWERMODE.mobile = false;
 document.body.addEventListener('input', POWERMODE);
