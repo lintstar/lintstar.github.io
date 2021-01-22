@@ -6,7 +6,7 @@
   <link href="https://www.lintstar.top/atom.xml" rel="self"/>
   
   <link href="https://www.lintstar.top/"/>
-  <updated>2021-01-05T04:05:37.715Z</updated>
+  <updated>2021-01-22T16:46:05.509Z</updated>
   <id>https://www.lintstar.top/</id>
   
   <author>
@@ -15,6 +15,40 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python 实现自动登录签到及微信通知</title>
+    <link href="https://www.lintstar.top/2021/01/5bf799f.html"/>
+    <id>https://www.lintstar.top/2021/01/5bf799f.html</id>
+    <published>2021-01-22T14:00:58.000Z</published>
+    <updated>2021-01-22T16:46:05.509Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><strong>零组资料文库 3.0 设置了信誉积分机制：</strong></p><table><thead><tr><th>信誉积分</th><th>权限</th></tr></thead><tbody><tr><td>0-200</td><td>六个月之前的文章</td></tr><tr><td>201-400</td><td>五个月之前的文章</td></tr><tr><td>401-600</td><td>四个月之前的文章</td></tr><tr><td>601-800</td><td>三个月之前的文章</td></tr><tr><td>801-1000</td><td>两个月之前的文章</td></tr><tr><td>1000分以上</td><td>一个月之前的文章</td></tr></tbody></table><p><strong>加分规则：</strong></p><p><strong>每日签到可加3分；投稿文章可加10分。</strong></p><blockquote><p>文库的权限是随着时间线进行推进的，也就是说即使一直是0分，也会在时间线的推进下自动递增可浏览的文章。</p></blockquote><p><strong>所以就需要一个签到脚本啦 ~</strong></p><h1 id="验证码识别"><a href="#验证码识别" class="headerlink" title="验证码识别"></a>验证码识别</h1><p><strong>因为零组的登录界面涉及到验证码</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210122181325.png" alt="20210122181325.png"></p><p><strong>需要一个验证码识别接口：</strong></p><p><strong>图鉴：<a href="http://www.ttshitu.com/">http://www.ttshitu.com/</a></strong></p><h2 id="价格"><a href="#价格" class="headerlink" title="价格"></a>价格</h2><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210122181937.png" alt="image-20210122181937953"></p><p><strong>流量包完全没必要 1块500次可以用好久</strong></p><h2 id="识别效果"><a href="#识别效果" class="headerlink" title="识别效果"></a>识别效果</h2><p><strong>这种简单的验证码准确度还是很不错的：</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210122182317.png" alt="image-20210122182317193"></p><h1 id="Server-酱"><a href="#Server-酱" class="headerlink" title="Server 酱"></a>Server 酱</h1><p><strong>Python3 测试脚本：</strong></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">key = <span class="string">&quot;&quot;</span> <span class="comment"># Server 酱的SCKEY</span></span><br><span class="line">url = <span class="string">&quot;https://sc.ftqq.com/%s.send&quot;</span>%(key)</span><br><span class="line">headers = &#123;<span class="string">&#x27;User-Agent&#x27;</span>:<span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36&#x27;</span>&#125;</span><br><span class="line">payload = &#123;<span class="string">&#x27;text&#x27;</span>: <span class="string">&#x27;Server 酱提醒&#x27;</span>, <span class="string">&#x27;desp&#x27;</span>: <span class="string">&#x27;Python 用 Server 酱推送微信模板消息&#x27;</span>&#125;</span><br><span class="line">requests.post(url, params=payload, headers=headers)</span><br></pre></td></tr></table></figure><p><strong>复制SCKEY：</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210122235416.png" alt="image-20210122235416805"></p><h1 id="自动签到脚本"><a href="#自动签到脚本" class="headerlink" title="自动签到脚本"></a>自动签到脚本</h1><p><strong>脚本改自：</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210122202435.png" alt="image-20210122202435193"></p><p><strong>添加了 Server 酱微信通知功能 方便每天接收通知</strong></p><p><strong>项目地址：<a href="https://github.com/lintstar/Zero-AutoCheck">https://github.com/lintstar/Zero-AutoCheck</a></strong></p><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p><strong>在 ① ② 处填入 <a href="http://www.ttshitu.com/">图鉴</a> 的账号密码 ③ 处填入 <a href="http://sc.ftqq.com/?c=code">Server 酱</a> 的 SCKEY</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210122203901.png" alt="image-20210122203901971"></p><p><strong>④ ⑤ 处分别填入 <a href="https://wiki.0-sec.org/#/login">零组文库</a> 的账号密码</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210122204419.png" alt="image-20210122204419293"></p><h1 id="脚本效果"><a href="#脚本效果" class="headerlink" title="脚本效果"></a>脚本效果</h1><p><strong>通知效果</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210122204759.png" alt="image-20210122204759618"></p><h2 id="签到失败通知"><a href="#签到失败通知" class="headerlink" title="签到失败通知"></a>签到失败通知</h2><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210122204838.png" alt="image-20210122204838079"></p><h2 id="签到成功效果"><a href="#签到成功效果" class="headerlink" title="签到成功效果"></a>签到成功效果</h2><p><strong>每日首次签到通知</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210123001123.png" alt="image-20210123001123289"></p><p><strong>重复签到通知</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210122204857.png" alt="image-20210122204857759"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;&lt;strong&gt;零组资料文库 3.0 设置了信誉积分机制：&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;信誉</summary>
+      
+    
+    
+    
+    <category term="Fun" scheme="https://www.lintstar.top/categories/Fun/"/>
+    
+    <category term="Auto" scheme="https://www.lintstar.top/categories/Fun/Auto/"/>
+    
+    
+    <category term="Python" scheme="https://www.lintstar.top/tags/Python/"/>
+    
+    <category term="ServerChan" scheme="https://www.lintstar.top/tags/ServerChan/"/>
+    
+    <category term="Crontab" scheme="https://www.lintstar.top/tags/Crontab/"/>
+    
+  </entry>
   
   <entry>
     <title>Redis GetShell 姿势总结</title>
@@ -129,13 +163,13 @@
     <category term="Auto" scheme="https://www.lintstar.top/categories/Fun/Auto/"/>
     
     
-    <category term="GithubAction" scheme="https://www.lintstar.top/tags/GithubAction/"/>
-    
     <category term="ServerChan" scheme="https://www.lintstar.top/tags/ServerChan/"/>
     
-    <category term="Bilibili" scheme="https://www.lintstar.top/tags/Bilibili/"/>
-    
     <category term="Crontab" scheme="https://www.lintstar.top/tags/Crontab/"/>
+    
+    <category term="GithubAction" scheme="https://www.lintstar.top/tags/GithubAction/"/>
+    
+    <category term="Bilibili" scheme="https://www.lintstar.top/tags/Bilibili/"/>
     
   </entry>
   
@@ -183,9 +217,9 @@
     <category term="Tools" scheme="https://www.lintstar.top/categories/Tools/"/>
     
     
-    <category term="ServerChan" scheme="https://www.lintstar.top/tags/ServerChan/"/>
-    
     <category term="Python" scheme="https://www.lintstar.top/tags/Python/"/>
+    
+    <category term="ServerChan" scheme="https://www.lintstar.top/tags/ServerChan/"/>
     
     <category term="CobaltStrike" scheme="https://www.lintstar.top/tags/CobaltStrike/"/>
     
@@ -241,9 +275,9 @@
     <category term="Tools" scheme="https://www.lintstar.top/categories/Tools/"/>
     
     
-    <category term="Mac" scheme="https://www.lintstar.top/tags/Mac/"/>
-    
     <category term="Python" scheme="https://www.lintstar.top/tags/Python/"/>
+    
+    <category term="Mac" scheme="https://www.lintstar.top/tags/Mac/"/>
     
     <category term="Web" scheme="https://www.lintstar.top/tags/Web/"/>
     
