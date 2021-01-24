@@ -1,7 +1,7 @@
 <!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>java.lang.Runtime.exec（）有效载荷解决方法 | 离沫凌天๓</title><meta name="author" content="离沫凌天๓"><meta name="copyright" content="离沫凌天๓"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="Shell 编码 (Java)有时，通过 Runtime.getRuntime().exec() 执行命令有效负载会导致失败。使用Web Shell，反序列化利用或通过其他媒介时，可能会发生这种情况。 这是因为重定向和管道字符的使用方式在启动过程的上下文中没有意义。例如，ls &gt; dir_listing 在 shell 中执行应将当前目录的列表输出到名为 dir_listing 的文件中。但">
 <meta property="og:type" content="website">
 <meta property="og:title" content="java.lang.Runtime.exec（）有效载荷解决方法">
-<meta property="og:url" content="https://www.lintstar.top/shell-java/index.html">
+<meta property="og:url" content="https://www.lintstar.top/tools/shell-java/index.html">
 <meta property="og:site_name" content="离沫凌天๓">
 <meta property="og:description" content="Shell 编码 (Java)有时，通过 Runtime.getRuntime().exec() 执行命令有效负载会导致失败。使用Web Shell，反序列化利用或通过其他媒介时，可能会发生这种情况。 这是因为重定向和管道字符的使用方式在启动过程的上下文中没有意义。例如，ls &gt; dir_listing 在 shell 中执行应将当前目录的列表输出到名为 dir_listing 的文件中。但">
 <meta property="og:locale" content="zh_CN">
@@ -10,7 +10,7 @@
 <meta property="article:modified_time" content="2021-01-08T13:16:57.570Z">
 <meta property="article:author" content="离沫凌天๓">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/plogo/favicon-32x32.png"><link rel="canonical" href="https://www.lintstar.top/shell-java/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/img/default.jpg"><link rel="shortcut icon" href="/plogo/favicon-32x32.png"><link rel="canonical" href="https://www.lintstar.top/tools/shell-java/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
   root: '/',
   algolia: undefined,
   localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
