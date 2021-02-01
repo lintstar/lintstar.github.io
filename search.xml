@@ -108,8 +108,6 @@
           
           <category> Fun </category>
           
-          <category> Auto </category>
-          
       </categories>
       
       
@@ -231,8 +229,6 @@
       <categories>
           
           <category> Fun </category>
-          
-          <category> Auto </category>
           
       </categories>
       
@@ -385,8 +381,6 @@
           
           <category> Blog </category>
           
-          <category> Hexo </category>
-          
       </categories>
       
       
@@ -414,7 +408,7 @@
       
       <categories>
           
-          <category> Butterfly </category>
+          <category> Blog </category>
           
       </categories>
       
