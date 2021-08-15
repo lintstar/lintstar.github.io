@@ -1,0 +1,505 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MacOS Big Sur 配置及使用记录 | 离沫凌天๓</title><meta name="keywords" content="Mac,BigSur,Environment"><meta name="author" content="离沫凌天๓"><meta name="copyright" content="离沫凌天๓"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="作为近几年以来变化最大的 macOS 更新，macOS Big Sur 对内置应用的图标、应用的设计语言、桌面的程序坞和菜单栏等方面都进行了重新设计，拟物化的风格深得人心。 虽说 “BugSur” 的名号不是白来的，但是在我近半年的使用体验来看，暂时没有遇到过实在无法解决的问题，所以还是很推荐有 “余力” 的 Mac 升级 BigSur 的，拥抱新事物总会有令人开心的地方 ~  本文会不断记录使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MacOS Big Sur 配置及使用记录">
+<meta property="og:url" content="https://www.lintstar.top/2021/04/4b5824a3.html">
+<meta property="og:site_name" content="离沫凌天๓">
+<meta property="og:description" content="作为近几年以来变化最大的 macOS 更新，macOS Big Sur 对内置应用的图标、应用的设计语言、桌面的程序坞和菜单栏等方面都进行了重新设计，拟物化的风格深得人心。 虽说 “BugSur” 的名号不是白来的，但是在我近半年的使用体验来看，暂时没有遇到过实在无法解决的问题，所以还是很推荐有 “余力” 的 Mac 升级 BigSur 的，拥抱新事物总会有令人开心的地方 ~  本文会不断记录使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qiniuyun.lintstar.top/hexo/20210511132831.webp">
+<meta property="article:published_time" content="2021-04-20T15:49:59.000Z">
+<meta property="article:modified_time" content="2021-05-26T03:43:14.000Z">
+<meta property="article:author" content="离沫凌天๓">
+<meta property="article:tag" content="Mac">
+<meta property="article:tag" content="BigSur">
+<meta property="article:tag" content="Environment">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://qiniuyun.lintstar.top/hexo/20210511132831.webp"><link rel="shortcut icon" href="/plogo/favicon-32x32.png"><link rel="canonical" href="https://www.lintstar.top/2021/04/4b5824a3"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"top-right"},
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: true
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-26 11:43:14'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="referrer" content="no-referrer-when-downgrade" /><meta name="referrer" content="no-referrer"/><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="离沫凌天๓" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" data-lazy-src="/plogo/Alogo.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw far fa-calendar-alt"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-tools"></i><span> 工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/shell-java/"><i class="fa-fw fas fa-rocket"></i><span> Shell 编码</span></a></li><li><a class="site-page" href="https://www.lintstar.top/tools/Reverse-shell.html"><i class="fa-fw fas fa-terminal"></i><span> 反弹 Shell</span></a></li><li><a class="site-page" href="/hw/"><i class="fa-fw fas fa-shield-alt"></i><span> HW 小工具</span></a></li><li><a class="site-page" href="https://www.lintstar.top/tools/Avsearch.html"><i class="fa-fw fas fa-biohazard"></i><span> AV Search</span></a></li><li><a class="site-page" href="https://www.lintstar.top/tools/Windows-log.html"><i class="fa-fw fab fa-windows"></i><span> Events Log</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-crown"></i><span> JAY</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" target="_blank" rel="noopener" href="https://y.qq.com/n/yqq/singer/0025NhlN2yWrP4.html"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://kg.qq.com/node/personal?uid=669a9d862c2e3e8337"><i class="fa-fw fas fa-headphones-alt"></i><span> Songs</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://qiniuyun.lintstar.top/hexo/20210511132831.webp)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">离沫凌天๓</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw far fa-calendar-alt"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-tools"></i><span> 工具</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/shell-java/"><i class="fa-fw fas fa-rocket"></i><span> Shell 编码</span></a></li><li><a class="site-page" href="https://www.lintstar.top/tools/Reverse-shell.html"><i class="fa-fw fas fa-terminal"></i><span> 反弹 Shell</span></a></li><li><a class="site-page" href="/hw/"><i class="fa-fw fas fa-shield-alt"></i><span> HW 小工具</span></a></li><li><a class="site-page" href="https://www.lintstar.top/tools/Avsearch.html"><i class="fa-fw fas fa-biohazard"></i><span> AV Search</span></a></li><li><a class="site-page" href="https://www.lintstar.top/tools/Windows-log.html"><i class="fa-fw fab fa-windows"></i><span> Events Log</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-crown"></i><span> JAY</span><i class="fas fa-chevron-down expand"></i></a><ul class="menus_item_child"><li><a class="site-page" target="_blank" rel="noopener" href="https://y.qq.com/n/yqq/singer/0025NhlN2yWrP4.html"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page" target="_blank" rel="noopener" href="https://kg.qq.com/node/personal?uid=669a9d862c2e3e8337"><i class="fa-fw fas fa-headphones-alt"></i><span> Songs</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">MacOS Big Sur 配置及使用记录</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-20T15:49:59.000Z" title="发表于 2021-04-20 23:49:59">2021-04-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-05-26T03:43:14.000Z" title="更新于 2021-05-26 11:43:14">2021-05-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Tools/">Tools</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p><strong>作为近几年以来变化最大的 macOS 更新，macOS Big Sur 对内置应用的图标、应用的设计语言、桌面的程序坞和菜单栏等方面都进行了重新设计，拟物化的风格深得人心。</strong></p>
+<p><strong>虽说 “BugSur” 的名号不是白来的，但是在我近半年的使用体验来看，暂时没有遇到过实在无法解决的问题，所以还是很推荐有 “余力” 的 Mac 升级 BigSur 的，拥抱新事物总会有令人开心的地方 ~</strong> </p>
+<p><strong>本文会不断记录使用过程中遇到的各种问题，以及能提升幸福感的 macOS 配置。</strong></p>
+<h1 id="Mac-配置"><a href="#Mac-配置" class="headerlink" title="Mac 配置"></a>Mac 配置</h1><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511124753.png" alt="image-20210511124753664"></p>
+<hr>
+<h1 id="系统快捷键"><a href="#系统快捷键" class="headerlink" title="系统快捷键"></a>系统快捷键</h1><table>
+<thead>
+<tr>
+<th>剪切、拷贝、粘贴和其他常用快捷键</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Command</code> + <code>X</code></td>
+<td>剪切所选项并拷贝到剪贴板</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>C</code></td>
+<td>将所选项拷贝到剪贴板。这同样适用于“访达”中的文件</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>V</code></td>
+<td>将剪贴板的内容粘贴到当前文稿或 App 中。这同样适用于“访达”中的文件</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>Z</code></td>
+<td>撤销上一个命令。随后您可以按 Shift + Command + Z 来重做，从而反向执行撤销命令。在某些 App 中，您可以撤销和重做多个命令</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>A</code></td>
+<td>全选各项</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>F</code></td>
+<td>查找文稿中的项目或打开“查找”窗口</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>G</code></td>
+<td>再次查找：查找之前所找到项目出现的下一个位置。要查找出现的上一个位置，请按 Shift + Command + G</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>H</code></td>
+<td>隐藏最前面的 App 的窗口。要查看最前面的 App 但隐藏所有其他 App，请按 Option + Command + H</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>M</code></td>
+<td>将最前面的窗口最小化至“程序坞”。要最小化最前面的 App 的所有窗口，请按 Option + Command + M</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>O</code></td>
+<td>打开所选项，或打开一个对话框以选择要打开的文件</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>P</code></td>
+<td>打印当前文稿</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>S</code></td>
+<td>存储当前文稿</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>T</code></td>
+<td>打开新标签页</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>W</code></td>
+<td>关闭最前面的窗口。要关闭 App 的所有窗口，请按下 Option + Command + W</td>
+</tr>
+<tr>
+<td><code>Option</code> + <code>Command</code> + <code>Esc</code></td>
+<td>强制退出 App</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>空格键</code></td>
+<td>显示或隐藏“聚焦”搜索栏。要从“访达”窗口执行“聚焦”搜索，请按 Command + Option + 空格键。</td>
+</tr>
+<tr>
+<td><code>Control</code> + <code>Command</code> + <code>空格键</code></td>
+<td>显示字符检视器，您可以从中选择表情符号和其他符号</td>
+</tr>
+<tr>
+<td><code>Control</code> + <code>Command</code> + <code>F</code></td>
+<td>全屏使用 App（如果 App 支持）</td>
+</tr>
+<tr>
+<td><code>空格键</code></td>
+<td>使用快速查看来预览所选项</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>Tab</code></td>
+<td>在打开的 App 中切换到下一个最近使用的 App</td>
+</tr>
+<tr>
+<td><code>Shift</code> + <code>Command</code> + <code>5</code></td>
+<td>在 macOS Mojave 或更高版本中，拍摄截屏或录制屏幕。也可以使用 Shift + Command + 3 或 Shift + Command + 4 来拍摄截屏。</td>
+</tr>
+<tr>
+<td><code>Shift</code> + <code>Command</code> + <code>N</code></td>
+<td>在“访达”中创建一个新文件夹</td>
+</tr>
+<tr>
+<td><code>Command</code> + <code>,</code> (逗号)</td>
+<td>打开最前面的 App 的偏好设置</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="—-软件-—"><a href="#—-软件-—" class="headerlink" title="— 软件 —"></a>— 软件 —</h1><blockquote>
+<p><strong>核心生产力：<a target="_blank" rel="noopener" href="https://macwk.com/">https://macwk.com/</a></strong></p>
+</blockquote>
+<h1 id="iTerm2"><a href="#iTerm2" class="headerlink" title="iTerm2"></a>iTerm2</h1><p>macOS 灵魂软件</p>
+<p>配置效果：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511125327.png" alt="image-20210511125327640"></p>
+<h2 id="Zsh"><a href="#Zsh" class="headerlink" title="Zsh"></a>Zsh</h2><p>zsh 是一款功能强大的 shell 软件，它可以兼容 bash，并且提供了很多高效的改进。它是Linux里最庞大的一种shell，它有84个内部命令，也提供了更为强大的功能:</p>
+<ul>
+<li>更好的自动补全</li>
+<li>更好的文件名展开</li>
+<li>丰富的插件</li>
+<li>强大的定制性</li>
+</ul>
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim .zshrc</span><br></pre></td></tr></table></figure>
+
+<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">78 <span class="comment"># Which plugins would you like to load?</span></span><br><span class="line">79 <span class="comment"># Standard plugins can be found in $ZSH/plugins/</span></span><br><span class="line">80 <span class="comment"># Custom plugins may be added to $ZSH_CUSTOM/plugins/</span></span><br><span class="line">81 <span class="comment"># Example format: plugins=(rails git textmate ruby lighthouse)</span></span><br><span class="line">82 <span class="comment"># Add wisely, as too many plugins slow down shell startup.</span></span><br><span class="line">83 plugins=(</span><br><span class="line">84         git</span><br><span class="line">85         zsh-autosuggestions</span><br><span class="line">86         autojump</span><br><span class="line">87         zsh-syntax-highlighting</span><br><span class="line">88 )</span><br><span class="line">89</span><br><span class="line">90 [ -f /usr/<span class="built_in">local</span>/etc/profile.d/autojump.sh ] &amp;&amp; . /usr/<span class="built_in">local</span>/etc/profile.d/autojump.sh</span><br><span class="line">91 <span class="built_in">source</span> <span class="variable">$ZSH</span>/oh-my-zsh.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="软链接"><a href="#软链接" class="headerlink" title="软链接"></a>软链接</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ln -s /Users/lintstar/opt/anaconda3 /usr/<span class="built_in">local</span>/bin/anaconda</span><br><span class="line">ln -s /Users/lintstar/Library/Python/3.8/bin/virtualenv /usr/<span class="built_in">local</span>/bin</span><br><span class="line"></span><br><span class="line">ln -s /Users/lintstar/Tools/attack/fscan/fscan /usr/<span class="built_in">local</span>/bin</span><br><span class="line">ln -s /Users/lintstar/Tools/subfinder/subfinder /usr/<span class="built_in">local</span>/bin</span><br><span class="line">ln -s /Users/lintstar/Tools/Attack/httpx/httpx /usr/<span class="built_in">local</span>/bin</span><br></pre></td></tr></table></figure>
+
+<p><strong>刷新 Zsh</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.zshrc</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="oh-my-zsh"><a href="#oh-my-zsh" class="headerlink" title="oh my zsh"></a>oh my zsh</h2><blockquote>
+<p>由于 zsh 配置过于复杂，一般情况下，我们不会使用该 shell，直到「oh my zsh」的出现。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="http://ohmyz.sh/">Oh My Zsh</a> 是一款社区驱动的命令行工具，正如它的主页上说的，Oh My Zsh 是一种生活方式。</p>
+<p>它基于zsh命令行，提供了主题配置，插件机制，已经内置的便捷操作，给我们一种全新的方式使用命令行。</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p><strong>在 .zshrc 中编辑</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">16 <span class="comment"># Path to your oh-my-zsh installation.</span></span><br><span class="line">17 <span class="built_in">export</span> ZSH=<span class="string">&quot;/Users/lintstar/.oh-my-zsh&quot;</span></span><br><span class="line">18</span><br><span class="line">19 <span class="comment"># Set name of the theme to load --- if set to &quot;random&quot;, it will</span></span><br><span class="line">20 <span class="comment"># load a random theme each time oh-my-zsh is loaded, in which case,</span></span><br><span class="line">21 <span class="comment"># to know which specific one was loaded, run: echo $RANDOM_THEME</span></span><br><span class="line">22 <span class="comment"># See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes</span></span><br><span class="line">23 ZSH_THEME=<span class="string">&quot;myys&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="myys-主题"><a href="#myys-主题" class="headerlink" title="myys 主题"></a>myys 主题</h3><p><strong>主题位置</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~&#x2F;.oh-my-zsh&#x2F;themes</span><br></pre></td></tr></table></figure>
+
+<p><strong>myys.zsh-theme</strong> </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">$ cat myys.zsh-theme</span><br><span class="line"><span class="comment"># Clean, simple, compatible and meaningful.</span></span><br><span class="line"><span class="comment"># Tested on Linux, Unix and Windows under ANSI colors.</span></span><br><span class="line"><span class="comment"># It is recommended to use with a dark background.</span></span><br><span class="line"><span class="comment"># Colors: black, red, green, yellow, *blue, magenta, cyan, and white.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Mar 2013 Yad Smood</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># VCS</span></span><br><span class="line">YS_VCS_PROMPT_PREFIX1=<span class="string">&quot; %&#123;<span class="variable">$fg</span>[white]%&#125;on%&#123;<span class="variable">$reset_color</span>%&#125; &quot;</span></span><br><span class="line">YS_VCS_PROMPT_PREFIX2=<span class="string">&quot;:%&#123;<span class="variable">$fg</span>[cyan]%&#125;&quot;</span></span><br><span class="line">YS_VCS_PROMPT_SUFFIX=<span class="string">&quot;%&#123;<span class="variable">$reset_color</span>%&#125;&quot;</span></span><br><span class="line">YS_VCS_PROMPT_DIRTY=<span class="string">&quot; %&#123;<span class="variable">$fg</span>[red]%&#125;x&quot;</span></span><br><span class="line">YS_VCS_PROMPT_CLEAN=<span class="string">&quot; %&#123;<span class="variable">$fg</span>[green]%&#125;o&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Git info</span></span><br><span class="line"><span class="built_in">local</span> git_info=<span class="string">&#x27;$(git_prompt_info)&#x27;</span></span><br><span class="line">ZSH_THEME_GIT_PROMPT_PREFIX=<span class="string">&quot;<span class="variable">$&#123;YS_VCS_PROMPT_PREFIX1&#125;</span>git<span class="variable">$&#123;YS_VCS_PROMPT_PREFIX2&#125;</span>&quot;</span></span><br><span class="line">ZSH_THEME_GIT_PROMPT_SUFFIX=<span class="string">&quot;<span class="variable">$YS_VCS_PROMPT_SUFFIX</span>&quot;</span></span><br><span class="line">ZSH_THEME_GIT_PROMPT_DIRTY=<span class="string">&quot;<span class="variable">$YS_VCS_PROMPT_DIRTY</span>&quot;</span></span><br><span class="line">ZSH_THEME_GIT_PROMPT_CLEAN=<span class="string">&quot;<span class="variable">$YS_VCS_PROMPT_CLEAN</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># HG info</span></span><br><span class="line"><span class="built_in">local</span> hg_info=<span class="string">&#x27;$(ys_hg_prompt_info)&#x27;</span></span><br><span class="line"><span class="function"><span class="title">ys_hg_prompt_info</span></span>() &#123;</span><br><span class="line">	<span class="comment"># make sure this is a hg dir</span></span><br><span class="line">	<span class="keyword">if</span> [ -d <span class="string">&#x27;.hg&#x27;</span> ]; <span class="keyword">then</span></span><br><span class="line">		<span class="built_in">echo</span> -n <span class="string">&quot;<span class="variable">$&#123;YS_VCS_PROMPT_PREFIX1&#125;</span>hg<span class="variable">$&#123;YS_VCS_PROMPT_PREFIX2&#125;</span>&quot;</span></span><br><span class="line">		<span class="built_in">echo</span> -n $(hg branch 2&gt;/dev/null)</span><br><span class="line">		<span class="keyword">if</span> [ -n <span class="string">&quot;<span class="subst">$(hg status 2&gt;/dev/null)</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">			<span class="built_in">echo</span> -n <span class="string">&quot;<span class="variable">$YS_VCS_PROMPT_DIRTY</span>&quot;</span></span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="built_in">echo</span> -n <span class="string">&quot;<span class="variable">$YS_VCS_PROMPT_CLEAN</span>&quot;</span></span><br><span class="line">		<span class="keyword">fi</span></span><br><span class="line">		<span class="built_in">echo</span> -n <span class="string">&quot;<span class="variable">$YS_VCS_PROMPT_SUFFIX</span>&quot;</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">local</span> exit_code=<span class="string">&quot;%(?,,C:%&#123;<span class="variable">$fg</span>[red]%&#125;%?%&#123;<span class="variable">$reset_color</span>%&#125;)&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Prompt format:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># PRIVILEGES USER @ MACHINE in DIRECTORY on git:BRANCH STATE [TIME] C:LAST_EXIT_CODE</span></span><br><span class="line"><span class="comment"># $ COMMAND</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># For example:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># % ys @ ys-mbp in ~/.oh-my-zsh on git:master x [21:47:42] C:0</span></span><br><span class="line"><span class="comment"># $</span></span><br><span class="line">PROMPT=<span class="string">&quot;</span></span><br><span class="line"><span class="string">%&#123;<span class="variable">$terminfo</span>[bold]<span class="variable">$fg</span>[blue]%&#125;#%&#123;<span class="variable">$reset_color</span>%&#125; \</span></span><br><span class="line"><span class="string">%(#,%&#123;<span class="variable">$bg</span>[yellow]%&#125;%&#123;<span class="variable">$fg</span>[black]%&#125;%n%&#123;<span class="variable">$reset_color</span>%&#125;,%&#123;<span class="variable">$fg</span>[cyan]%&#125;%n) \</span></span><br><span class="line"><span class="string">%&#123;<span class="variable">$fg</span>[white]%&#125;from \</span></span><br><span class="line"><span class="string">%&#123;<span class="variable">$terminfo</span>[bold]<span class="variable">$fg</span>[yellow]%&#125;%~%&#123;<span class="variable">$reset_color</span>%&#125;\</span></span><br><span class="line"><span class="string"><span class="variable">$&#123;hg_info&#125;</span>\</span></span><br><span class="line"><span class="string"><span class="variable">$&#123;git_info&#125;</span>\</span></span><br><span class="line"><span class="string"> \</span></span><br><span class="line"><span class="string">%&#123;<span class="variable">$fg</span>[white]%&#125;[%*] <span class="variable">$exit_code</span></span></span><br><span class="line"><span class="string">%&#123;<span class="variable">$terminfo</span>[bold]<span class="variable">$fg</span>[red]%&#125;$ %&#123;<span class="variable">$reset_color</span>%&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="超级右键"><a href="#超级右键" class="headerlink" title="超级右键"></a>超级右键</h1><p>右键进入 iTerm2 的巴适懂得都懂</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210415012644.png" alt="image-20210415012644180"></p>
+<h1 id="Bob"><a href="#Bob" class="headerlink" title="Bob"></a>Bob</h1><p>翻译功能 Command+d 就不说了</p>
+<p>重点是截图翻译可以用来当作文字识别使用 </p>
+<p>在一些不能复制粘贴的地方还是很方便的</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511122258.png" alt="image-20210511122258953"></p>
+<p>配置好 API 即可 （百度翻译体验很好而且免费~）</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511121651.png" alt="image-20210511121651216"></p>
+<h1 id="HiddenBar"><a href="#HiddenBar" class="headerlink" title="HiddenBar"></a>HiddenBar</h1><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511122723.png" alt="image-20210511122723692"></p>
+<blockquote>
+<p>在 | 和 &gt; 中间可以用Command 拖入需要一直显示但是很占地方的菜单栏 例如 QQ 音乐</p>
+</blockquote>
+<p><strong>实际效果</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511122657.png" alt="image-20210511122657500"></p>
+<h1 id="Image2icon"><a href="#Image2icon" class="headerlink" title="Image2icon"></a>Image2icon</h1><p>自己封装 APP 时候制作图标神器</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511123425.png" alt="image-20210511123425488"></p>
+<p>配合<strong>自动操作</strong>体验极好：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511123646.png" alt="image-20210511123646022"></p>
+<h1 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h1><h2 id="Suspicious-Site-Reporter"><a href="#Suspicious-Site-Reporter" class="headerlink" title="Suspicious Site Reporter"></a>Suspicious Site Reporter</h2><p>Chrome 官方插件 可以显示 https 还是 http 方便粘贴 URL</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511113810.png" alt="image-20210511113810266"></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h1 id="Pycharm"><a href="#Pycharm" class="headerlink" title="Pycharm"></a>Pycharm</h1><h2 id="插件-1"><a href="#插件-1" class="headerlink" title="插件"></a>插件</h2><h3 id="Chinese-Simplified-Language-Pack-中文语言包"><a href="#Chinese-Simplified-Language-Pack-中文语言包" class="headerlink" title="Chinese (Simplified )Language Pack/ 中文语言包"></a>Chinese (Simplified )Language Pack/ 中文语言包</h3><p>添加中文作为 IDE 界面语言。</p>
+<h3 id="Material-Theme-U"><a href="#Material-Theme-U" class="headerlink" title="Material Theme U"></a>Material Theme U</h3><p>主题插件看个人喜好 ~</p>
+<h3 id="Ideavim"><a href="#Ideavim" class="headerlink" title="Ideavim"></a>Ideavim</h3><p>像 VIM 一样编辑代码。</p>
+<h3 id="Nyan-Progress-Bar"><a href="#Nyan-Progress-Bar" class="headerlink" title="Nyan Progress Bar"></a>Nyan Progress Bar</h3><p>基于LJ的ide的nyan cat的retty进度条：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511115657.png" alt="image-20210511115657423"></p>
+<h2 id="Mac-Pycharm-空间或内存不够"><a href="#Mac-Pycharm-空间或内存不够" class="headerlink" title="Mac Pycharm 空间或内存不够"></a>Mac Pycharm 空间或内存不够</h2><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210415030649.png" alt="image-20210415030649132"></p>
+<hr>
+<h1 id="—环境—"><a href="#—环境—" class="headerlink" title="—环境—"></a>—环境—</h1><h1 id="HomeBrew"><a href="#HomeBrew" class="headerlink" title="HomeBrew"></a>HomeBrew</h1><p>Homebrew 是安装 Apple 不包含在 macOS 中的 UNIX 工具的最简单，最灵活的方法。它还可以将不需要 Linux 发行包打包的软件安装到主目录，而无需安装 <code>sudo</code>。</p>
+<blockquote>
+<p><strong>HomeBrew 已经支持 BigSur！划重点</strong></p>
+</blockquote>
+<h2 id="安装脚本"><a href="#安装脚本" class="headerlink" title="安装脚本"></a>安装脚本</h2><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/bin/zsh -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://gitee.com/cunkai/HomebrewCN/raw/master/Homebrew.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="自检命令"><a href="#自检命令" class="headerlink" title="自检命令"></a>自检命令</h2><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin/brew doctor</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew install smartmontools</span><br><span class="line"></span><br><span class="line">smartctl -a disk0</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/111014448">https://zhuanlan.zhihu.com/p/111014448</a></p>
+</blockquote>
+<h2 id="卸载重新安装"><a href="#卸载重新安装" class="headerlink" title="卸载重新安装"></a>卸载重新安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew uninstall --force node &amp;&amp; brew install node</span><br></pre></td></tr></table></figure>
+
+<h2 id="Download-failed-问题"><a href="#Download-failed-问题" class="headerlink" title="Download failed 问题"></a>Download failed 问题</h2><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210412043224.png"></p>
+<p>这个报错怎么查都解决不了，查了一万种方法，甚至重装了 brew   </p>
+<p>后面断掉公司网：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210412043447.png" alt="image-20210412043447403"></p>
+<p>！！！！！！！！！！！！</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><ol>
+<li><strong>更换网络尝试</strong></li>
+<li><strong>brew update 后再次尝试</strong></li>
+</ol>
+<h2 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h2><p><strong>1. 安装命令</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install redis</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 进入安装目录</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/Cellar/redis/4.0.6/bin</span><br></pre></td></tr></table></figure>
+
+<p><strong>3. 启动、关闭redis</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ redis-server</span><br></pre></td></tr></table></figure>
+
+<p> 以下命令即可关闭redis服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; SHUTDOWN</span><br></pre></td></tr></table></figure>
+
+<p><strong>4. 连接redis服务</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ redis-cli -h  127.0.0.1（ip） -p 1234（端口号）</span><br></pre></td></tr></table></figure>
+
+<p><strong>5. 键入授权登录密码</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; AUTH 123456（密码）</span><br></pre></td></tr></table></figure>
+
+<p><strong>6. 退出本次会话</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; quit</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="Anaconda"><a href="#Anaconda" class="headerlink" title="Anaconda"></a>Anaconda</h1><h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a><strong>常用命令</strong></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ conda env list</span><br><span class="line"><span class="comment"># conda environments:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">base                  *  /Users/lintstar/opt/anaconda3</span><br></pre></td></tr></table></figure>
+
+<p>查看当前配置信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda info </span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>mac 安装了conda后，前面会有一个(base)</strong></p>
+<blockquote>
+<p>安装conda后，每次启动终端，都会自动启动conda的base环境，conda的环境可以用 conda env list 查看</p>
+</blockquote>
+<p><strong>解决办法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda config --<span class="built_in">set</span> auto_activate_base <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/108506007">https://zhuanlan.zhihu.com/p/108506007</a></li>
+</ul>
+<h1 id="Metasploit"><a href="#Metasploit" class="headerlink" title="Metasploit"></a>Metasploit</h1><h2 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h2><p>最新版下载地址：<a target="_blank" rel="noopener" href="https://osx.metasploit.com/metasploitframework-latest.pkg">https://osx.metasploit.com/metasploitframework-latest.pkg</a></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210526111056.png" alt="image-20210526111056496"></p>
+<h2 id="Zsh-软链接"><a href="#Zsh-软链接" class="headerlink" title="Zsh 软链接"></a>Zsh 软链接</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.zshrc</span><br></pre></td></tr></table></figure>
+
+<p>添加一条软链接记录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="string">&quot;<span class="variable">$PATH</span>:/opt/metasploit-framework/bin&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>刷新 Zsh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zsh</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><strong>初始化数据库</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/metasploit-framework/bin</span><br><span class="line">./msfdb init</span><br></pre></td></tr></table></figure>
+
+<p><strong>运行 MSF</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfconsole</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>启动账号密码设置 msf/msf</p>
+</blockquote>
+<p><strong>可能出现某个模块加载失败：</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210526113619.png" alt="image-20210526113619529"></p>
+<p><strong>解决办法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open /opt/metasploit-framework/embedded/framework/modules/auxiliary/gather</span><br></pre></td></tr></table></figure>
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210526113700.png" alt="image-20210526113700779"></p>
+<p><strong>修改后即可正常启动：</strong></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210526113759.png" alt="image-20210526113759574"></p>
+<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/metasploit-framework/bin</span><br><span class="line">sudo ./msfremove</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">离沫凌天๓</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://www.lintstar.top/2021/04/4b5824a3.html">https://www.lintstar.top/2021/04/4b5824a3.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://www.lintstar.top" target="_blank">离沫凌天๓</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Mac/">Mac</a><a class="post-meta__tags" href="/tags/BigSur/">BigSur</a><a class="post-meta__tags" href="/tags/Environment/">Environment</a></div><div class="post_share"><div class="social-share" data-image="https://qiniuyun.lintstar.top/hexo/20210511132831.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/05/b5afb4fa.html"><img class="prev-cover" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511015535.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">安装 YunYouJun 牌云空调</div></div></a></div><div class="next-post pull-right"><a href="/2021/03/7b4f6af8.html"><img class="next-cover" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210330100358.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">隐藏 C2的几种方式</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a target="_blank" rel="noopener" href="//2020/10/779868c0.html" title="MacOS下重建Hexo博客2.0全记录"><img class="cover" data-lazy-src="/cover/MacButterfly.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-10-06</div><div class="title">MacOS下重建Hexo博客2.0全记录</div></div></a></div><div><a target="_blank" rel="noopener" href="//2020/10/2eadcca4.html" title="MacOS python3 安装 gevent 模块"><img class="cover" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029000055.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-10-29</div><div class="title">MacOS python3 安装 gevent 模块</div></div></a></div><div><a target="_blank" rel="noopener" href="//2020/11/bddb12c0.html" title="MacOS 破解安装 Nessus 8.12.0"><img class="cover" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029232106.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-05</div><div class="title">MacOS 破解安装 Nessus 8.12.0</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="/plogo/Alogo.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">离沫凌天๓</div><div class="author-info__description">花开花落 一路上起起跌跌</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">24</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div><a class="button--animated" id="card-info-btn" href="/message/"><i class="fas fa-star"></i><span>With Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:admin@lintstar.top" target="_blank" title="Email"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="Rss"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">" 我顶着大太阳 只想为你撑伞 "</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mac-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">Mac 配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">2.</span> <span class="toc-text">系统快捷键</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E2%80%94-%E8%BD%AF%E4%BB%B6-%E2%80%94"><span class="toc-number">3.</span> <span class="toc-text">— 软件 —</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#iTerm2"><span class="toc-number">4.</span> <span class="toc-text">iTerm2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Zsh"><span class="toc-number">4.1.</span> <span class="toc-text">Zsh</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">4.1.1.</span> <span class="toc-text">配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6"><span class="toc-number">4.1.2.</span> <span class="toc-text">插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="toc-number">4.1.3.</span> <span class="toc-text">软链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#oh-my-zsh"><span class="toc-number">4.2.</span> <span class="toc-text">oh my zsh</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">4.2.1.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#myys-%E4%B8%BB%E9%A2%98"><span class="toc-number">4.2.2.</span> <span class="toc-text">myys 主题</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%B6%85%E7%BA%A7%E5%8F%B3%E9%94%AE"><span class="toc-number">5.</span> <span class="toc-text">超级右键</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bob"><span class="toc-number">6.</span> <span class="toc-text">Bob</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HiddenBar"><span class="toc-number">7.</span> <span class="toc-text">HiddenBar</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Image2icon"><span class="toc-number">8.</span> <span class="toc-text">Image2icon</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Chrome"><span class="toc-number">9.</span> <span class="toc-text">Chrome</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Suspicious-Site-Reporter"><span class="toc-number">9.1.</span> <span class="toc-text">Suspicious Site Reporter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">9.2.</span> <span class="toc-text"></span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Pycharm"><span class="toc-number">10.</span> <span class="toc-text">Pycharm</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6-1"><span class="toc-number">10.1.</span> <span class="toc-text">插件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Chinese-Simplified-Language-Pack-%E4%B8%AD%E6%96%87%E8%AF%AD%E8%A8%80%E5%8C%85"><span class="toc-number">10.1.1.</span> <span class="toc-text">Chinese (Simplified )Language Pack&#x2F; 中文语言包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Material-Theme-U"><span class="toc-number">10.1.2.</span> <span class="toc-text">Material Theme U</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ideavim"><span class="toc-number">10.1.3.</span> <span class="toc-text">Ideavim</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Nyan-Progress-Bar"><span class="toc-number">10.1.4.</span> <span class="toc-text">Nyan Progress Bar</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mac-Pycharm-%E7%A9%BA%E9%97%B4%E6%88%96%E5%86%85%E5%AD%98%E4%B8%8D%E5%A4%9F"><span class="toc-number">10.2.</span> <span class="toc-text">Mac Pycharm 空间或内存不够</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E2%80%94%E7%8E%AF%E5%A2%83%E2%80%94"><span class="toc-number">11.</span> <span class="toc-text">—环境—</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HomeBrew"><span class="toc-number">12.</span> <span class="toc-text">HomeBrew</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E8%84%9A%E6%9C%AC"><span class="toc-number">12.1.</span> <span class="toc-text">安装脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E6%A3%80%E5%91%BD%E4%BB%A4"><span class="toc-number">12.2.</span> <span class="toc-text">自检命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B8%E8%BD%BD%E9%87%8D%E6%96%B0%E5%AE%89%E8%A3%85"><span class="toc-number">12.3.</span> <span class="toc-text">卸载重新安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Download-failed-%E9%97%AE%E9%A2%98"><span class="toc-number">12.4.</span> <span class="toc-text">Download failed 问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="toc-number">12.4.1.</span> <span class="toc-text">解决办法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis"><span class="toc-number">12.5.</span> <span class="toc-text">Redis</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Anaconda"><span class="toc-number">13.</span> <span class="toc-text">Anaconda</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">13.1.</span> <span class="toc-text">常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">13.2.</span> <span class="toc-text">参考链接</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Metasploit"><span class="toc-number">14.</span> <span class="toc-text">Metasploit</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85"><span class="toc-number">14.1.</span> <span class="toc-text">下载安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Zsh-%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="toc-number">14.2.</span> <span class="toc-text">Zsh 软链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">14.3.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%B8%E8%BD%BD"><span class="toc-number">14.4.</span> <span class="toc-text">卸载</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/07/e65fcded.html" title="CS-ServerChan 主机上线微信通知"><img data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210728115114.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CS-ServerChan 主机上线微信通知"/></a><div class="content"><a class="title" href="/2021/07/e65fcded.html" title="CS-ServerChan 主机上线微信通知">CS-ServerChan 主机上线微信通知</a><time datetime="2021-07-28T03:49:59.000Z" title="发表于 2021-07-28 11:49:59">2021-07-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/07/d1676e54.html" title="LSTAR - CobaltStrike 后渗透插件"><img data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210707153910.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="LSTAR - CobaltStrike 后渗透插件"/></a><div class="content"><a class="title" href="/2021/07/d1676e54.html" title="LSTAR - CobaltStrike 后渗透插件">LSTAR - CobaltStrike 后渗透插件</a><time datetime="2021-07-07T05:49:59.000Z" title="发表于 2021-07-07 13:49:59">2021-07-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/06/cc6d559a.html" title="MSF 作战手册及联动 CobaltStrike"><img data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210705103406.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MSF 作战手册及联动 CobaltStrike"/></a><div class="content"><a class="title" href="/2021/06/cc6d559a.html" title="MSF 作战手册及联动 CobaltStrike">MSF 作战手册及联动 CobaltStrike</a><time datetime="2021-06-12T15:49:59.000Z" title="发表于 2021-06-12 23:49:59">2021-06-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/05/b5afb4fa.html" title="安装 YunYouJun 牌云空调"><img data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511015535.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="安装 YunYouJun 牌云空调"/></a><div class="content"><a class="title" href="/2021/05/b5afb4fa.html" title="安装 YunYouJun 牌云空调">安装 YunYouJun 牌云空调</a><time datetime="2021-05-10T14:22:22.000Z" title="发表于 2021-05-10 22:22:22">2021-05-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/4b5824a3.html" title="MacOS Big Sur 配置及使用记录"><img data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210511132831.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="MacOS Big Sur 配置及使用记录"/></a><div class="content"><a class="title" href="/2021/04/4b5824a3.html" title="MacOS Big Sur 配置及使用记录">MacOS Big Sur 配置及使用记录</a><time datetime="2021-04-20T15:49:59.000Z" title="发表于 2021-04-20 23:49:59">2021-04-20</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(https://qiniuyun.lintstar.top/hexo/20210511132831.webp)"><div id="footer-wrap"><div class="copyright">&copy;2018 - 2021 <i style="color:#FF6A6A" class="fa fa-heartbeat"></i> 离沫凌天๓</div><div class="footer_custom_text">生如逐放 心有焰藏</div><div class="icp"><a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/"><img class="icp-icon" src="/plogo/icp.png"/><span>津ICP备18005284号</span></a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.spacingElementById('content-inner')
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.spacingElementById('content-inner')
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: 'IO9a37akXEBhcRHfWBtCYpP4-gzGzoHsz',
+      appKey: 'yIfjz0E13epDN98BRX5uxeM7',
+      placeholder: '请畅所欲言吧！昵称那里填写你的QQ号就可以自动获取邮箱、头像、昵称啦',
+      avatar: 'monsterid',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: true,
+      serverURLs: 'https:com.lintstar.top',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: true,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign(initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !true) {
+  if (true) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script></div></body></html>
