@@ -6,7 +6,7 @@
   <link href="https://www.lintstar.top/atom.xml" rel="self"/>
   
   <link href="https://www.lintstar.top/"/>
-  <updated>2021-08-12T03:43:17.679Z</updated>
+  <updated>2021-08-16T03:07:49.551Z</updated>
   <id>https://www.lintstar.top/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于 Github 不再支持命令行通过密码操作仓库的解决办法</title>
+    <link href="https://www.lintstar.top/2021/08/4b8ee7df.html"/>
+    <id>https://www.lintstar.top/2021/08/4b8ee7df.html</id>
+    <published>2021-08-16T01:35:06.534Z</published>
+    <updated>2021-08-16T03:07:49.551Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>2021年 8 月 13 日之后，Github 移除了对密码身份验证的支持</p><p>如果仍然使用账户密码来操作 Github 上的仓库，就会收到如下警告：</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816092243.png" alt="image-20210816092243010"></p><blockquote><p>正如消息所说，Github 希望我们开始使用个人访问令牌 (PAT) 而不是密码身份验证。如果没有提示输入用户名和密码，说明我们的凭据可能已缓存在计算机上。 可以在密钥链中更新我们的凭据，用令牌替换之前的旧密码。</p></blockquote><h1 id="hexo-d-报错"><a href="#hexo-d-报错" class="headerlink" title="hexo -d 报错"></a>hexo -d 报错</h1><p>今天在更新博客时发现无法提交到 Github 显示连接 SSL 连接失败：</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816092118.png" alt="image-20210816092118343"></p><h1 id="Git-命令操作仓库"><a href="#Git-命令操作仓库" class="headerlink" title="Git 命令操作仓库"></a>Git 命令操作仓库</h1><p>找了一个项目进行测试</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816093254.png" alt="image-20210816093254672"></p><p>其实就是将连接方式改为 SSH</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除旧的连接方式</span></span><br><span class="line">git remote rm origin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换 SSH 连接</span></span><br><span class="line">git remote add origin git@github.com:lintstar/Valine-Admin.git</span><br></pre></td></tr></table></figure><h1 id="Hexo-连接-Github"><a href="#Hexo-连接-Github" class="headerlink" title="Hexo 连接 Github"></a>Hexo 连接 Github</h1><p>可是博客的目录并不是一个仓库</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816101925.png" alt="image-20210816101925644"></p><p>网上查了一圈因为问题太新没有找到什么解决办法</p><p>特意回到去年的文章翻了一下Hexo 和 Github 连接的配置详情：</p><p><a href="https://www.lintstar.top/2020/10/779868c0.html#%E6%9C%AC%E5%9C%B0%E5%8D%9A%E5%AE%A2%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E8%87%B3-Github">本地博客文件上传至 Github</a></p><p>发现 博客根目录 hexo 的配置文件 <code>_config.yml</code> 是这样的：</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816101646.png" alt="image-20210816101646384"></p><p>因此我们只需要把使用密码连接的 HTTPS 换成使用 SSH 密钥连接</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816101757.png" alt="image-20210816101757750"></p><p>就可以正常提交 Github 了：</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816101823.png" alt="image-20210816101823678"></p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul><li><p><a href="https://docs.github.com/cn/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token">Github 创建个人访问令牌</a></p></li><li><p><a href="https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">将新的 SSH 密钥添加到您的 GitHub 帐户</a></p></li><li><p><a href="https://whatibroke.com/2021/08/14/support-for-password-authentication-was-removed-on-august-13-2021-please-use-a-personal-access-token-instead-fix-for-mac/">Support for password authentication was removed on August 13, 2021. Fix for Mac</a></p></li></ul>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;2021年 8 月 13 日之后，Github 移除了对密码身份验证的支持&lt;/p&gt;
+&lt;p&gt;如果仍然使用账户密码来操作 Github 上的仓库</summary>
+      
+    
+    
+    
+    <category term="Blog" scheme="https://www.lintstar.top/categories/Blog/"/>
+    
+    
+    <category term="Hexo" scheme="https://www.lintstar.top/tags/Hexo/"/>
+    
+    <category term="Mac" scheme="https://www.lintstar.top/tags/Mac/"/>
+    
+    <category term="Github" scheme="https://www.lintstar.top/tags/Github/"/>
+    
+  </entry>
   
   <entry>
     <title>CS-ServerChan 主机上线微信通知</title>
@@ -64,9 +93,9 @@
     <category term="Tools" scheme="https://www.lintstar.top/categories/Tools/"/>
     
     
-    <category term="CobaltStrike" scheme="https://www.lintstar.top/tags/CobaltStrike/"/>
-    
     <category term="Attack" scheme="https://www.lintstar.top/tags/Attack/"/>
+    
+    <category term="CobaltStrike" scheme="https://www.lintstar.top/tags/CobaltStrike/"/>
     
     <category term="Aggressor" scheme="https://www.lintstar.top/tags/Aggressor/"/>
     
@@ -92,11 +121,11 @@
     <category term="Tools" scheme="https://www.lintstar.top/categories/Tools/"/>
     
     
-    <category term="CobaltStrike" scheme="https://www.lintstar.top/tags/CobaltStrike/"/>
-    
     <category term="Attack" scheme="https://www.lintstar.top/tags/Attack/"/>
     
     <category term="Metasploit" scheme="https://www.lintstar.top/tags/Metasploit/"/>
+    
+    <category term="CobaltStrike" scheme="https://www.lintstar.top/tags/CobaltStrike/"/>
     
   </entry>
   
@@ -177,9 +206,9 @@
     
     <category term="Python" scheme="https://www.lintstar.top/tags/Python/"/>
     
-    <category term="CobaltStrike" scheme="https://www.lintstar.top/tags/CobaltStrike/"/>
-    
     <category term="Attack" scheme="https://www.lintstar.top/tags/Attack/"/>
+    
+    <category term="CobaltStrike" scheme="https://www.lintstar.top/tags/CobaltStrike/"/>
     
     <category term="Serverless" scheme="https://www.lintstar.top/tags/Serverless/"/>
     
@@ -381,9 +410,9 @@
     
     <category term="Python" scheme="https://www.lintstar.top/tags/Python/"/>
     
-    <category term="ServerChan" scheme="https://www.lintstar.top/tags/ServerChan/"/>
-    
     <category term="Crontab" scheme="https://www.lintstar.top/tags/Crontab/"/>
+    
+    <category term="ServerChan" scheme="https://www.lintstar.top/tags/ServerChan/"/>
     
   </entry>
   
@@ -500,9 +529,9 @@
     <category term="Fun" scheme="https://www.lintstar.top/categories/Fun/"/>
     
     
-    <category term="ServerChan" scheme="https://www.lintstar.top/tags/ServerChan/"/>
-    
     <category term="Crontab" scheme="https://www.lintstar.top/tags/Crontab/"/>
+    
+    <category term="ServerChan" scheme="https://www.lintstar.top/tags/ServerChan/"/>
     
     <category term="GithubAction" scheme="https://www.lintstar.top/tags/GithubAction/"/>
     
@@ -563,39 +592,13 @@
     
     <category term="Python" scheme="https://www.lintstar.top/tags/Python/"/>
     
+    <category term="Attack" scheme="https://www.lintstar.top/tags/Attack/"/>
+    
     <category term="CobaltStrike" scheme="https://www.lintstar.top/tags/CobaltStrike/"/>
     
     <category term="ServerChan" scheme="https://www.lintstar.top/tags/ServerChan/"/>
     
-    <category term="Attack" scheme="https://www.lintstar.top/tags/Attack/"/>
-    
     <category term="Ladon" scheme="https://www.lintstar.top/tags/Ladon/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MacOS 破解安装 Nessus 8.12.0</title>
-    <link href="https://www.lintstar.top/2020/11/bddb12c0.html"/>
-    <id>https://www.lintstar.top/2020/11/bddb12c0.html</id>
-    <published>2020-11-05T02:55:03.000Z</published>
-    <updated>2020-11-05T02:55:03.000Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="MacOS-破解安装-Nessus-8-12-0"><a href="#MacOS-破解安装-Nessus-8-12-0" class="headerlink" title="MacOS 破解安装 Nessus 8.12.0"></a>MacOS 破解安装 Nessus 8.12.0</h1><p><strong>系统环境：macOS 10.15.7</strong></p><p><strong>Nessus 版本：8.12.0</strong></p><hr><h1 id="下载安装"><a href="#下载安装" class="headerlink" title="下载安装"></a>下载安装</h1><ol><li><strong>Nessus 官网：<a href="https://www.tenable.com/downloads/nessus">https://www.tenable.com/downloads/nessus</a> 下载后缀 <code>.dmg</code></strong></li></ol><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029102551.png" alt="image-20201029102551281"></p><ol start="2"><li><p><strong>安装成功后的 Nessus 目录位于 <code>/Library/Nessus/</code></strong></p></li><li><p><strong>Nessus 默认地址为：<a href="https://127.0.0.1:8834/">https://127.0.0.1:8834/</a></strong></p></li><li><p><strong>安装完毕会自动打开浏览器，注意</strong>⚠️<strong>要选择 Managed Scanner</strong> </p></li><li><p><strong>然后在 Manageed by 下拉选择 Tenable.sc</strong> </p></li><li><p><strong>最后输入用户名和密码登录</strong></p></li></ol><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029105048.png" alt="image-20201029105048389"></p><hr><h1 id="获取激活码"><a href="#获取激活码" class="headerlink" title="获取激活码"></a>获取激活码</h1><p><a href="https://zh-cn.tenable.com/products/nessus/activation-code?tns_redirect=true#nessus">https://zh-cn.tenable.com/products/nessus/activation-code?tns_redirect=true#nessus</a></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029100355.png" alt="image-20201029100355106"></p><p><strong>导入激活码 完成后进入设置页，激活成功，显示仅允许扫描16个IP</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029113858.png" alt="image-20201029113858602"></p><p><strong>然后访问 <a href="https://plugins.nessus.org/offline.php">https://plugins.nessus.org/offline.php</a> 以下载获取 all-2.0.tar.gz 和 nessus-fetch.rc 文件</strong></p><p><strong>这里需要输入挑战码和激活码</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029100515.png" alt="image-20201029100514989"></p><hr><h1 id="获取挑战码"><a href="#获取挑战码" class="headerlink" title="获取挑战码"></a>获取挑战码</h1><p><strong>终端运行：</strong></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /Library/Nessus/run/sbin</span><br><span class="line">sudo ./nessuscli fetch --challenge</span><br></pre></td></tr></table></figure><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029100442.png" alt="image-20201029100442069"></p><hr><h1 id="下载升级离线更新包"><a href="#下载升级离线更新包" class="headerlink" title="下载升级离线更新包"></a>下载升级离线更新包</h1><p><strong>下载较慢需要等待</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029103310.png" alt="image-20201029103310459"></p><blockquote><p><strong>记得下载 nessus-fetch.rc</strong></p></blockquote><p> <strong>下载好后终端运行：</strong></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /Library/Nessus/run/sbin</span><br><span class="line">sudo ./nessuscli update ~/Downloads/all-2.0.tar.gz</span><br></pre></td></tr></table></figure><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029103844.png" alt="image-20201029103844886"></p><p><strong>复制 nessus-fetch.rc 到 <code>/Library/Nessus/run/etc/nessus/nessus-fetch.rc</code></strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029104139.png" alt="image-20201029104139576"></p><hr><h1 id="重启-Nessus-服务"><a href="#重启-Nessus-服务" class="headerlink" title="重启 Nessus 服务"></a>重启 Nessus 服务</h1><p><strong>终端运行：</strong></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /Library/Nessus/run/sbin</span><br><span class="line">sudo ./nessusd restart</span><br></pre></td></tr></table></figure><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029104547.png" alt="image-20201029104547817"></p><p><strong>系统偏好设置中也可以重启</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029104734.png" alt="image-20201029104733982"></p><hr><h1 id="替换文件"><a href="#替换文件" class="headerlink" title="替换文件"></a>替换文件</h1><p><strong>新建一个 plugin_feed_info.inc 文件内容如下：</strong></p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PLUGIN_SET = <span class="string">&quot;202010191623&quot;</span>;</span><br><span class="line">PLUGIN_FEED = <span class="string">&quot;ProfessionalFeed (Direct)&quot;</span>;</span><br><span class="line"></span><br><span class="line">PLUGIN_FEED_TRANSPORT = <span class="string">&quot;Tenable Network Security Lightning&quot;</span>;</span><br></pre></td></tr></table></figure><blockquote><p><strong>这里的数字串是上边更新 all-2.0.tar.gz 时 plugins 的 version</strong></p></blockquote><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029110849.png" alt="image-20201029110849847"></p><p><strong>在下面目录替换 plugin_feed_info.inc 破解文件</strong> </p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Library/Nessus/run/var/nessus/plugin_feed_info.inc </span><br></pre></td></tr></table></figure><p><strong>把下面目录的 plugin_feed_info.inc 删除</strong></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Library/Nessus/run/lib/nessus/plugins/plugin_feed_info.inc</span><br></pre></td></tr></table></figure><p><strong>修改用户、组和权限 (非必要)</strong></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chown root:admin ./plugin_feed_info.inc &amp;&amp; sudo chmod 644 ./plugin_feed_info.inc</span><br></pre></td></tr></table></figure><p><strong>重启 Nessus 等待初始化完成</strong></p><hr><h1 id="激活成功"><a href="#激活成功" class="headerlink" title="激活成功"></a>激活成功</h1><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20201029223210.png" alt="image-20201029223210200"></p><p><strong>不再有之前的 IP 限制</strong></p><p><strong><a href="https://sec.kim/wp-content/uploads/2020/10/Nessus-8.12.0-%E6%9C%80%E6%96%B0%E7%89%88%E7%A0%B4%E8%A7%A3%E6%96%B9%E6%B3%95.pdf">Windows 下破解安装 Nessus_8.12.0</a></strong></p><hr><h1 id="破解原理"><a href="#破解原理" class="headerlink" title="破解原理"></a>破解原理</h1><ul><li><p><strong>新版本Nessus在检测到 lib/nessus/plugins 目录下有 plugin_feed_info.inc 文件，且内容与某些文件不匹配时，会清空plugins目录下的所有插件，导致即使破解了版本限制，也无法进行扫描。</strong></p></li><li><p><strong>而 var/nessus/plugin_feed_info.inc为破解内容时，lib/nessus/plugins/plugin_feed_info.inc 会直接复制 var/nessus/plugin_feed_info.inc 的内容，最终可绕过清空 plugins。</strong></p></li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;MacOS-破解安装-Nessus-8-12-0&quot;&gt;&lt;a href=&quot;#MacOS-破解安装-Nessus-8-12-0&quot; class=&quot;headerlink&quot; title=&quot;MacOS 破解安装 Nessus 8.12.0&quot;&gt;&lt;/a&gt;MacOS 破解安装 Nes</summary>
-      
-    
-    
-    
-    <category term="Tools" scheme="https://www.lintstar.top/categories/Tools/"/>
-    
-    
-    <category term="Mac" scheme="https://www.lintstar.top/tags/Mac/"/>
-    
-    <category term="Nessus" scheme="https://www.lintstar.top/tags/Nessus/"/>
     
   </entry>
   

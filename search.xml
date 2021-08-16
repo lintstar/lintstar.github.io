@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>关于 Github 不再支持命令行通过密码操作仓库的解决办法</title>
+      <link href="/2021/08/4b8ee7df.html"/>
+      <url>/2021/08/4b8ee7df.html</url>
+      
+        <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>2021年 8 月 13 日之后，Github 移除了对密码身份验证的支持</p><p>如果仍然使用账户密码来操作 Github 上的仓库，就会收到如下警告：</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816092243.png" alt="image-20210816092243010"></p><blockquote><p>正如消息所说，Github 希望我们开始使用个人访问令牌 (PAT) 而不是密码身份验证。如果没有提示输入用户名和密码，说明我们的凭据可能已缓存在计算机上。 可以在密钥链中更新我们的凭据，用令牌替换之前的旧密码。</p></blockquote><h1 id="hexo-d-报错"><a href="#hexo-d-报错" class="headerlink" title="hexo -d 报错"></a>hexo -d 报错</h1><p>今天在更新博客时发现无法提交到 Github 显示连接 SSL 连接失败：</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816092118.png" alt="image-20210816092118343"></p><h1 id="Git-命令操作仓库"><a href="#Git-命令操作仓库" class="headerlink" title="Git 命令操作仓库"></a>Git 命令操作仓库</h1><p>找了一个项目进行测试</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816093254.png" alt="image-20210816093254672"></p><p>其实就是将连接方式改为 SSH</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除旧的连接方式</span></span><br><span class="line">git remote rm origin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换 SSH 连接</span></span><br><span class="line">git remote add origin git@github.com:lintstar/Valine-Admin.git</span><br></pre></td></tr></table></figure><h1 id="Hexo-连接-Github"><a href="#Hexo-连接-Github" class="headerlink" title="Hexo 连接 Github"></a>Hexo 连接 Github</h1><p>可是博客的目录并不是一个仓库</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816101925.png" alt="image-20210816101925644"></p><p>网上查了一圈因为问题太新没有找到什么解决办法</p><p>特意回到去年的文章翻了一下Hexo 和 Github 连接的配置详情：</p><p><a href="https://www.lintstar.top/2020/10/779868c0.html#%E6%9C%AC%E5%9C%B0%E5%8D%9A%E5%AE%A2%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E8%87%B3-Github">本地博客文件上传至 Github</a></p><p>发现 博客根目录 hexo 的配置文件 <code>_config.yml</code> 是这样的：</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816101646.png" alt="image-20210816101646384"></p><p>因此我们只需要把使用密码连接的 HTTPS 换成使用 SSH 密钥连接</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816101757.png" alt="image-20210816101757750"></p><p>就可以正常提交 Github 了：</p><p><img src= "/img/loading.gif" data-lazy-src="https://qiniuyun.lintstar.top/hexo/20210816101823.png" alt="image-20210816101823678"></p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><ul><li><p><a href="https://docs.github.com/cn/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token">Github 创建个人访问令牌</a></p></li><li><p><a href="https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">将新的 SSH 密钥添加到您的 GitHub 帐户</a></p></li><li><p><a href="https://whatibroke.com/2021/08/14/support-for-password-authentication-was-removed-on-august-13-2021-please-use-a-personal-access-token-instead-fix-for-mac/">Support for password authentication was removed on August 13, 2021. Fix for Mac</a></p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Blog </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+            <tag> Mac </tag>
+            
+            <tag> Github </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>CS-ServerChan 主机上线微信通知</title>
       <link href="/2021/07/e65fcded.html"/>
       <url>/2021/07/e65fcded.html</url>
@@ -49,9 +78,9 @@
       
         <tags>
             
-            <tag> CobaltStrike </tag>
-            
             <tag> Attack </tag>
+            
+            <tag> CobaltStrike </tag>
             
             <tag> Aggressor </tag>
             
@@ -78,11 +107,11 @@
       
         <tags>
             
-            <tag> CobaltStrike </tag>
-            
             <tag> Attack </tag>
             
             <tag> Metasploit </tag>
+            
+            <tag> CobaltStrike </tag>
             
         </tags>
       
@@ -167,9 +196,9 @@
             
             <tag> Python </tag>
             
-            <tag> CobaltStrike </tag>
-            
             <tag> Attack </tag>
+            
+            <tag> CobaltStrike </tag>
             
             <tag> Serverless </tag>
             
@@ -380,9 +409,9 @@
             
             <tag> Python </tag>
             
-            <tag> ServerChan </tag>
-            
             <tag> Crontab </tag>
+            
+            <tag> ServerChan </tag>
             
         </tags>
       
@@ -502,9 +531,9 @@
       
         <tags>
             
-            <tag> ServerChan </tag>
-            
             <tag> Crontab </tag>
+            
+            <tag> ServerChan </tag>
             
             <tag> GithubAction </tag>
             
@@ -568,11 +597,11 @@
             
             <tag> Python </tag>
             
+            <tag> Attack </tag>
+            
             <tag> CobaltStrike </tag>
             
             <tag> ServerChan </tag>
-            
-            <tag> Attack </tag>
             
             <tag> Ladon </tag>
             
